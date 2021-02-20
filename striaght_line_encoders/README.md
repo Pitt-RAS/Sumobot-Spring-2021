@@ -1,1 +1,1 @@
-this is the straigh line encoders readme.
+this is the straight line encoders readme.
