@@ -31,7 +31,7 @@ void calibrateSensors()
 {
   lcd.clear();
   delay(1000);
-  for(int i = 0; i < 120; i++)
+  for(int i = 0; i < 150; i++)
   {
     if (i > 30 && i <= 90)
     {
