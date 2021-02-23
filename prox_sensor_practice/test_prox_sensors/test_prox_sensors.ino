@@ -1,3 +1,16 @@
+/*
+ * 
+ * Author: Nathaniel Mallick
+ * Date: 04/22/2021
+ * 
+ * This program test the 4 proximity sensors on the  ZUMO32U4
+ * 
+ * Each sensors value is displayed on the LCD 
+ * 
+ * If the sensor reads a value >= 5 (it reads a max value of 5) then the buzzer goes off
+ * 
+*/ 
+
 #include <Wire.h> 
 #include <Zumo32U4.h> 
 
@@ -12,7 +25,7 @@ Zumo32U4ButtonA buttonA;
   unsigned char buzzerVolume = 8; // On scale of 0-15
 
 void setup() {
-  // put your setup code here, to run once:
+  
   proxSensors.initThreeSensors(); 
   buttonA.waitForButton(); // Wait for button A to be pressed to start 
 }
@@ -38,6 +51,7 @@ void loop() {
   lcd.print(sensors[3]);
   lcd.print(" "); 
 
+  /*Check each sensor and buzz if it reads a value of 5 or greater*/
   for(int i = 0; i < 4; i++) {
     if(sensors[i] >= 5) {
         buzzer.playFrequency(buzzerFrequency, buzzerDuration, buzzerVolume); // Play buzzer
