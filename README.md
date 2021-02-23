@@ -9,4 +9,5 @@ So, markup and markdown are scripting languages used to stylistically format tex
 
 [Here](https://guides.github.com/features/mastering-markdown/#examples) is a fairly comprehensive guide to what you can do with github's markdown.  IMO this kind of stuff is great to be using on a regular basis to accurately and thoroughly document your projects.  It will make your projects stand out a ton more, and overall look a lot more professional.
 
-![GROUP ZOOM PHOTO](https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/images/first_meeting_spring_2021.png =250x250)
+
+<img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/images/first_meeting_spring_2021.png" width="600">
