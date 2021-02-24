@@ -71,5 +71,4 @@ void loop() {
     lcd.gotoXY(7,1);
     lcd.print("MSR: " + motorSpeedRight); //print motor speed right
   }
-
 }
