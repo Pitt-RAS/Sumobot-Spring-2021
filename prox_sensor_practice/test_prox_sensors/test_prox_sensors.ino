@@ -156,3 +156,25 @@ void printToLcd(int sensors[4]){
     return (((int32_t)turnAngle >> 16)*360)>>16; 
 
     }
+
+void turnAround(){
+    if(sensors[1]>=5 && sensors[2]>=5) {
+    turnSensorUpdate();
+    while(1){
+    printToLcd(sensors);
+    turnSensorUpdate();
+    
+    /*STOPS BETWEEN 170 ~ 180 AND -170 ~ -180*/
+    if(getAngle()<170 && getAngle()>0 ) {
+        motors.setSpeeds(-left, right); 
+      } else if(getAngle()>-170 && getAngle()< 0 ) {
+        motors.setSpeeds(left, -right); 
+      } else {
+        motors.setSpeeds(0,0); 
+        break;
+        }
+    }
+    readSensors(sensors);  
+    turnSensorReset(); //Reset gyroscope 
+  }
+}
