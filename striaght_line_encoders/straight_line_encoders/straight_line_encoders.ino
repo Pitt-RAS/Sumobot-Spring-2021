@@ -48,15 +48,5 @@ void loop() {
       motorSpeedLeft -= 1;
       motorSpeedRight += 1;
     }
-    Serial.print(countsLeft);
-    Serial.print("\t");
-    Serial.print(countsRight);
-    Serial.print("\t");
-    Serial.print(motorSpeedLeft);
-    Serial.print("\t");
-    Serial.print(motorSpeedRight);
-    Serial.print("\n");
-
   }
-
 }
