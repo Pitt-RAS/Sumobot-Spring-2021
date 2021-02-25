@@ -62,13 +62,10 @@ void loop() {
 
     //update LCD screen
     lcd.clear();  // clears screen
-    lcd.gotoXY(0,0); // sets the position to x = 0, y = 0
-    lcd.print("CL: " + countsLeft); //print the counts to the left
-    lcd.gotoXY(7,0); // move the cursor to halfway down the line
-    lcd.print("CR: " + countsRight); // print the count to the right
+    lcd.gotoXY(0,0); // sets position to line 1
+    lcd.print( "CL: " + countsLeft); // displays the countsLeft
     lcd.gotoXY(0,1);
-    lcd.print("MSL: " + motorSpeedLeft); //print the motor speed to the left
-    lcd.gotoXY(7,1);
-    lcd.print("MSR: " + motorSpeedRight); //print motor speed right
+    lcd.print( "CR: " + countsRight);
+    
   }
 }
