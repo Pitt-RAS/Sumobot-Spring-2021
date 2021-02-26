@@ -1,4 +1,4 @@
-/*
+  /*
  * 
  * Author: Nathaniel Mallick, Justin Cacal 
  * Date: 04/22/2021
@@ -18,7 +18,7 @@
  * Update (B): 04/23/2021
  * 
  * Bot will turn ~180 degrees if it detects an object directly in front of it
- * (IT LOOPS SO HAVE A CLEAR SURROUNDING)
+ * !! (IT LOOPS SO HAVE A CLEAR SURROUNDING)
 */ 
 
 #include <Wire.h> 
@@ -38,8 +38,8 @@ Zumo32U4IMU imu;
   unsigned char buzzerVolume = 8; // On scale of 0-15
 
   //Motor speeds
-  int16_t left = 100;
-  int16_t right = 100; 
+  int16_t left = 150;
+  int16_t right = 150; 
   
 void setup() {
   buttonA.waitForButton(); // Wait for button A to be pressed to start 
