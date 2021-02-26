@@ -84,9 +84,14 @@ void loop() {
   lcd.gotoXY(0,1);
   lcd.print("FR: ");
   lcd.print(proxSensors.countsFrontWithRightLeds());
+  lcd.gotoXY(7,0);
+  lcd.print(proxSensors.countsLeftWithLeftLeds());
+  lcd.gotoXY(7,1);
+  lcd.print(proxSensors.countsRightWithRightLeds());
 
   // stop both motors if an object is detected close to the front of the vehicle
-  if (proxSensors.countsFrontWithLeftLeds() == 6 || proxSensors.countsFrontWithRightLeds() == 6)
+  if (proxSensors.countsFrontWithLeftLeds() == 6 || proxSensors.countsFrontWithRightLeds() == 6 ||
+      proxSensors.countsLeftWithLeftLeds() == 6 || proxSensors.countsRightWithRightLeds() == 6)
   {
     motorSpeedLeft = 0;
     motorSpeedRight = 0;
