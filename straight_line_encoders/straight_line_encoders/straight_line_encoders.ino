@@ -46,7 +46,7 @@ void setup() {
 void loop() {
   motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
 
-  readMotorValues()
+  readMotorValues();
 
   // reads the proximity sensors
   proxSensors.read();
