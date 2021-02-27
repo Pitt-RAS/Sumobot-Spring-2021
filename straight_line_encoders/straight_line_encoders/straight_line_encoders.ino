@@ -49,14 +49,30 @@ void loop() {
   readMotorValues();
 
   // reads the proximity sensors
-  proxSensors.read();
+  
 
-  /*Removed side proxSensors to just deal with front sensors (for now)*/
-  // stop both motors if an object is detected close to the front of the vehicle
-  if (proxSensors.countsFrontWithLeftLeds() == 6 || proxSensors.countsFrontWithRightLeds() == 6){
-    motorSpeedLeft = 0;
-    motorSpeedRight = 0;
+  while(isObject()) {
+  turn(); 
   }
+}
+
+
+
+bool isObject() {
+
+    /*Removed side proxSensors to just deal with front sensors (for now)*/
+  // stop both motors if an object is detected close to the front of the vehicle
+    proxSensors.read();
+  if (proxSensors.countsFrontWithLeftLeds() == 6 || proxSensors.countsFrontWithRightLeds() == 6){
+    return true; 
+  } else {return false;}
+  
+  }
+
+void turn(){
+  //turn at half speed
+  motors.setSpeeds(motorSpeedLeft/2, -motorSpeedRight/2);
+  
 }
 
 
