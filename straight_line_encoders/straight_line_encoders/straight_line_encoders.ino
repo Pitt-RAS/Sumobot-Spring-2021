@@ -47,10 +47,12 @@ void setup() {
 void loop() {
   motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
 
-
+  adjustMotors();
 
   // reads the proximity sensors
   proxSensors.read();
+
+  displayEncValues();
 
   /*Removed side proxSensors to just deal with front sensors (for now)*/
   // stop both motors if an object is detected close to the front of the vehicle
