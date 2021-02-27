@@ -11,8 +11,7 @@ Zumo32U4Encoders encoders;
 Zumo32U4ProximitySensors proxSensors;
 
 //Prototype functions
-void adjustMotors();
-void displayEncValues();
+void readMotorValues();
 
 // Initial speeds for left and right motors (0-400)
 int16_t motorSpeedLeft  = 100;
@@ -47,12 +46,10 @@ void setup() {
 void loop() {
   motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
 
-  adjustMotors();
+  readMotorValues()
 
   // reads the proximity sensors
   proxSensors.read();
-
-  displayEncValues();
 
   /*Removed side proxSensors to just deal with front sensors (for now)*/
   // stop both motors if an object is detected close to the front of the vehicle
@@ -63,8 +60,8 @@ void loop() {
 }
 
 
-//Adjusts the motors speed based on the encoder values read
-void adjustMotors(){
+//Displays motors onto LCD
+void readMotorValues(){
     //reads encoders and adjusts speeds every 100 ms
   if ((millis() - lastEncoderTime) >= 100)
   {
@@ -81,14 +78,7 @@ void adjustMotors(){
       motorSpeedRight += 1;
     }
 
-    displayEncValues();
-  }
-}
-
-
-//Displayes the encoder values onto the LCD
-void displayEncValues(){
-      /*Might delete if not necessary*/
+          /*Might delete if not necessary*/
 //    Serial.print(countsLeft);
 //    Serial.print("\t");
 //    Serial.print(countsRight);
@@ -106,4 +96,5 @@ void displayEncValues(){
     lcd.print(countsLeft); // displays the countsLeft encoder
     lcd.gotoXY(0,1);
     lcd.print(countsRight);// displays the countsRight encoder
+  }
 }
