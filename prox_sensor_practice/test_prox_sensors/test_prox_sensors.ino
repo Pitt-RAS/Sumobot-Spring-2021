@@ -38,8 +38,8 @@ Zumo32U4IMU imu;
   unsigned char buzzerVolume = 8; // On scale of 0-15
 
   //Motor speeds
-  int16_t left = 150;
-  int16_t right = 150; 
+  int16_t left = 100;
+  int16_t right = 100; 
   
 void setup() {
   buttonA.waitForButton(); // Wait for button A to be pressed to start 
@@ -88,26 +88,12 @@ void loop() {
  
   /*If something is in front of the bot, it will turn ~180 degrees*/
   /*NOTE: this loops so if the bot is surround by objects it will keep spinning*/
-  
-  if(sensors[1]>=5 && sensors[2]>=5) {
-    turnSensorUpdate();
-    while(1){
-    printToLcd(sensors);
-    turnSensorUpdate();
-    
-    /*STOPS BETWEEN 170 ~ 180 AND -170 ~ -180*/
-    if(getAngle()<170 && getAngle()>0 ) {
-        motors.setSpeeds(-left, right); 
-      } else if(getAngle()>-170 && getAngle()< 0 ) {
-        motors.setSpeeds(left, -right); 
-      } else {
-        motors.setSpeeds(0,0); 
-        break;
-        }
+  if(sensors[1]>=6 && sensors[2]>=6) {
+    turnAround(sensors); 
+  //printToLcd(sensors);  
     }
-    readSensors(sensors);  
-    turnSensorReset(); //Reset gyroscope 
-  }
+ 
+ 
 
 /*****************************************************************************************/
 
@@ -139,7 +125,7 @@ void readSensors(int sensors[4]) {
 void printToLcd(int sensors[4]){
     lcd.gotoXY(0, 0); 
     lcd.print(getAngle()); 
-    lcd.print(" "); 
+    lcd.print("  ");   
     lcd.gotoXY(0, 1);
     lcd.print(sensors[0]);
     lcd.print(" "); 
@@ -157,24 +143,23 @@ void printToLcd(int sensors[4]){
 
     }
 
-void turnAround(){
-    if(sensors[1]>=5 && sensors[2]>=5) {
+void turnAround(int sensors[]){
+    
     turnSensorUpdate();
     while(1){
     printToLcd(sensors);
     turnSensorUpdate();
     
     /*STOPS BETWEEN 170 ~ 180 AND -170 ~ -180*/
-    if(getAngle()<170 && getAngle()>0 ) {
+    if(getAngle()<179 && getAngle()>0 ) {
         motors.setSpeeds(-left, right); 
-      } else if(getAngle()>-170 && getAngle()< 0 ) {
+      } else if(getAngle()>-180 && getAngle()< 0 ) {
         motors.setSpeeds(left, -right); 
       } else {
         motors.setSpeeds(0,0); 
         break;
         }
-    }
-    readSensors(sensors);  
+    }  
     turnSensorReset(); //Reset gyroscope 
-  }
+  
 }

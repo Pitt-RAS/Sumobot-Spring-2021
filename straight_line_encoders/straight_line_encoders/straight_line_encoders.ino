@@ -1,4 +1,6 @@
-
+/*
+*PREPARING SENSORS FOR READING AND MERGING SOME BLOCKS OF THE CODE INTO FUNCTIONS
+*/
 #include <Wire.h>
 #include <Zumo32U4.h>
 
@@ -9,8 +11,8 @@ Zumo32U4Encoders encoders;
 Zumo32U4ProximitySensors proxSensors;
 
 // Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 150;
-int16_t motorSpeedRight = 150;
+int16_t motorSpeedLeft  = 100;
+int16_t motorSpeedRight = 100;
 
 //Initialize LCD screen -- create LCD object
 Zumo32U4LCD lcd;
@@ -56,30 +58,33 @@ void loop() {
       motorSpeedLeft -= 1;
       motorSpeedRight += 1;
     }
-    Serial.print(countsLeft);
-    Serial.print("\t");
-    Serial.print(countsRight);
-    Serial.print("\t");
-    Serial.print(motorSpeedLeft);
-    Serial.print("\t");
-    Serial.print(motorSpeedRight);
-    Serial.print("\n");
+    
+    /*Might delete if not necessary*/
+//    Serial.print(countsLeft);
+//    Serial.print("\t");
+//    Serial.print(countsRight);
+//    Serial.print("\t");
+//    Serial.print(motorSpeedLeft);
+//    Serial.print("\t");
+//    Serial.print(motorSpeedRight);
+//    Serial.print("\n"); 
 
     // update LCD screen
     lcd.clear();  // clears screen
-    lcd.gotoXY(0,0); // sets position to line 1
-    lcd.print( "CL: " + countsLeft); // displays the countsLeft
+
+    /*Removed CR and CL since string length is interfering with LCD display capacity*/
+    lcd.gotoXY(0,0); // sets position to line 
+    lcd.print(countsLeft); // displays the countsLeft encoder
     lcd.gotoXY(0,1);
-    lcd.print( "CR: " + countsRight);
+    lcd.print(countsRight);// displays the countsRight encoder
   }
 
   // reads the proximity sensors
   proxSensors.read();
 
+  /*Removed side proxSensors to just deal with front sensors (for now)*/
   // stop both motors if an object is detected close to the front of the vehicle
-  if (proxSensors.countsFrontWithLeftLeds() == 6 || proxSensors.countsFrontWithRightLeds() == 6 ||
-      proxSensors.countsLeftWithLeftLeds() == 6 || proxSensors.countsRightWithRightLeds() == 6)
-  {
+  if (proxSensors.countsFrontWithLeftLeds() == 6 || proxSensors.countsFrontWithRightLeds() == 6){
     motorSpeedLeft = 0;
     motorSpeedRight = 0;
   }
