@@ -65,29 +65,16 @@ void loop() {
     Serial.print(motorSpeedRight);
     Serial.print("\n");
 
-    // temporarily hijacking the lcd to test the proximity sensors
-    //update LCD screen
-    //lcd.clear();  // clears screen
-    //lcd.gotoXY(0,0); // sets position to line 1
-    //lcd.print( "CL: " + countsLeft); // displays the countsLeft
-    //lcd.gotoXY(0,1);
-    //lcd.print( "CR: " + countsRight);
+    // update LCD screen
+    lcd.clear();  // clears screen
+    lcd.gotoXY(0,0); // sets position to line 1
+    lcd.print( "CL: " + countsLeft); // displays the countsLeft
+    lcd.gotoXY(0,1);
+    lcd.print( "CR: " + countsRight);
   }
 
   // reads the proximity sensors
   proxSensors.read();
-
-  // displaying proximity sensor output to lcd to test sensitivity
-  lcd.gotoXY(0,0);
-  lcd.print("FL: ");
-  lcd.print(proxSensors.countsFrontWithLeftLeds());
-  lcd.gotoXY(0,1);
-  lcd.print("FR: ");
-  lcd.print(proxSensors.countsFrontWithRightLeds());
-  lcd.gotoXY(7,0);
-  lcd.print(proxSensors.countsLeftWithLeftLeds());
-  lcd.gotoXY(7,1);
-  lcd.print(proxSensors.countsRightWithRightLeds());
 
   // stop both motors if an object is detected close to the front of the vehicle
   if (proxSensors.countsFrontWithLeftLeds() == 6 || proxSensors.countsFrontWithRightLeds() == 6 ||
