@@ -49,16 +49,8 @@ void loop() {
   // reads the proximity sensors
       
       if(isObject()) {
-<<<<<<< HEAD
         stopMotors();
-=======
-        stopMotors();  
->>>>>>> 8ad0da24ffdfa3e15be954dc5432e7208f984b6b
-        
-        
-        
-          motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
-          delay(500); // delay for half a second 
+ //         motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
 
           
 //          int16_t countsLeft = encoders.getCountsAndResetLeft();
@@ -113,7 +105,7 @@ void turn(){
       if(getAngle()<35 && getAngle()>0 ) {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
         } else if(getAngle()>-35 && getAngle()< 0 ) {
-          motors.setSpeeds(-motorSpeedLeft, -motorSpeedRight); 
+          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
         } else {
           motors.setSpeeds(0,0); 
           break;
