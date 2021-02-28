@@ -20,7 +20,7 @@ void readMotorValues();
 int16_t motorSpeedLeft  = 100;
 int16_t motorSpeedRight = 100;
 
-//Initialize LCD screen -- create LCD object
+unsigned long initialDelay = 1000;
 
 
 //declare for use in encoder adjustment
@@ -36,7 +36,7 @@ void setup() {
   unsigned int buzzerFrequency = 261; // Middle C
   unsigned int buzzerDuration =  50; // In milliseconds
   unsigned char buzzerVolume = 10; // On scale of 0-15
-  unsigned long initialDelay = 1000;
+  
   
   buzzer.playFrequency(buzzerFrequency, buzzerDuration, buzzerVolume); // Play buzzer
   delay(initialDelay); // Delay robot so it doesn't immediately move after pressing button A
@@ -46,24 +46,22 @@ void setup() {
 }
 
 void loop() {
-  
-  motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
-  readMotorValues();
-
   // reads the proximity sensors
-      proxSensors.read();
+      
       if(isObject()) {
+        stopMotors();  
+        delay(initialDelay); 
         
-        stopMotors(); 
         /*put code in for backing up here!*/
-
+          
         /**********************************/
-
-        
         turn(); 
-        } 
+        } else {
+          motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
+          readMotorValues();        
+          }
 
-  //motors.setSpeeds(0,0); 
+   
   
 }
 
