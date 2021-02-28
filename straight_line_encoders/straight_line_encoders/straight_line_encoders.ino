@@ -3,12 +3,15 @@
 */
 #include <Wire.h>
 #include <Zumo32U4.h>
+#include "TurnSensor.h"
 
+Zumo32U4IMU imu;
 Zumo32U4Motors motors;
 Zumo32U4ButtonA buttonA;
 Zumo32U4Buzzer buzzer;
 Zumo32U4Encoders encoders;
 Zumo32U4ProximitySensors proxSensors;
+Zumo32U4LCD lcd;
 
 //Prototype functions
 void readMotorValues();
@@ -18,29 +21,28 @@ int16_t motorSpeedLeft  = 100;
 int16_t motorSpeedRight = 100;
 
 //Initialize LCD screen -- create LCD object
-Zumo32U4LCD lcd;
+
 
 //declare for use in encoder adjustment
 unsigned long int lastEncoderTime;
 
 void setup() {
+  
+  turnSensorSetup();
+  
   buttonA.waitForButton(); // Wait for button A to be pressed to start
 
   // Buzzer variables in case they need to be changed
   unsigned int buzzerFrequency = 261; // Middle C
   unsigned int buzzerDuration =  50; // In milliseconds
   unsigned char buzzerVolume = 10; // On scale of 0-15
-
-  buzzer.playFrequency(buzzerFrequency, buzzerDuration, buzzerVolume); // Play buzzer
-
   unsigned long initialDelay = 1000;
+  
+  buzzer.playFrequency(buzzerFrequency, buzzerDuration, buzzerVolume); // Play buzzer
   delay(initialDelay); // Delay robot so it doesn't immediately move after pressing button A
-
   lastEncoderTime = millis(); //sets initial value
-
-  // For this configuration to work, jumpers on the front sensor array must
-  // be installed in order to connect pin 20 to LFT and connect pin 4 to RGT.
   proxSensors.initThreeSensors(); // configures proxSensors to use all three sensors
+  
 }
 
 void loop() {
@@ -49,32 +51,57 @@ void loop() {
   readMotorValues();
 
   // reads the proximity sensors
-  
-  proxSensors.read();
-  while(isObject()) {
-    turn(); 
-  }
+      proxSensors.read();
+      if(isObject()) {
+        
+        stopMotors(); 
+        /*put code in for backing up here!*/
+
+        /**********************************/
+
+        
+        turn(); 
+        } 
 
   //motors.setSpeeds(0,0); 
   
 }
 
 
+void stopMotors() {
+  motors.setSpeeds(0, 0);
+  }
 
+  
 bool isObject() {
 
     /*Removed side proxSensors to just deal with front sensors (for now)*/
   // stop both motors if an object is detected close to the front of the vehicle
     proxSensors.read();
-  if (proxSensors.countsFrontWithLeftLeds() == 6 || proxSensors.countsFrontWithRightLeds() == 6){
+  if (proxSensors.countsFrontWithLeftLeds() >= 5 || proxSensors.countsFrontWithRightLeds() >= 5){
     return true; 
   } else {return false;}
   
   }
 
 void turn(){
-  //turn at half speed
-  motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);
+    turnSensorUpdate();
+    
+    
+    while(1){
+      turnSensorUpdate();
+      
+      /*STOPS BETWEEN 170 ~ 180 AND -170 ~ -180*/
+      if(getAngle()<35 && getAngle()>0 ) {
+          motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
+        } else if(getAngle()>-35 && getAngle()< 0 ) {
+          motors.setSpeeds(-motorSpeedLeft, -motorSpeedRight); 
+        } else {
+          motors.setSpeeds(0,0); 
+          break;
+          }
+      }  
+      turnSensorReset(); //Reset gyroscope 
   
 }
 
@@ -117,3 +144,8 @@ void readMotorValues(){
     lcd.print(countsRight);// displays the countsRight encoder
   }
 }
+
+int32_t getAngle() {
+    return (((int32_t)turnAngle >> 16)*360)>>16; 
+
+ }
