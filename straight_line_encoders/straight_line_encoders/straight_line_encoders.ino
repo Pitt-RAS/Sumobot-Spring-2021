@@ -49,11 +49,9 @@ void loop() {
   // reads the proximity sensors
       
       if(isObject()) {
-<<<<<<< HEAD
+
         stopMotors();
-=======
-        stopMotors();  
->>>>>>> 8ad0da24ffdfa3e15be954dc5432e7208f984b6b
+
         
         
         
