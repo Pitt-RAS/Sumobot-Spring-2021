@@ -52,7 +52,20 @@ void loop() {
         stopMotors();  
         delay(initialDelay); 
         
-        /*put code in for backing up here!*/
+        for(uint8_t i=20;i>0;i--){
+          motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
+          int16_t countsLeft = encoders.getCountsAndResetLeft();
+          int16_t countsRight = encoders.getCountsAndResetRight();
+      
+          //adjusts speed based on encoder data
+          if(countsLeft < countsRight){
+            motorSpeedLeft += 1;
+            motorSpeedRight -= 1;
+          } else if (countsLeft > countsRight){
+            motorSpeedLeft -= 1;
+            motorSpeedRight += 1;
+          }
+        }
           
         /**********************************/
         turn(); 
