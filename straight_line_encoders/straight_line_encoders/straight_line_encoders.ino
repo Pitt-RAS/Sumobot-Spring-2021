@@ -44,16 +44,19 @@ void setup() {
 }
 
 void loop() {
+  
   motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
-
   readMotorValues();
 
   // reads the proximity sensors
   
-
+  proxSensors.read();
   while(isObject()) {
-  turn(); 
+    turn(); 
   }
+
+  //motors.setSpeeds(0,0); 
+  
 }
 
 
@@ -71,7 +74,7 @@ bool isObject() {
 
 void turn(){
   //turn at half speed
-  motors.setSpeeds(motorSpeedLeft/2, -motorSpeedRight/2);
+  motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);
   
 }
 
