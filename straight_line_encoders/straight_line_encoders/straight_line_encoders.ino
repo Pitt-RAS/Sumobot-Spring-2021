@@ -1,3 +1,14 @@
+/*
+ *ZUMO PROJECT 1
+ *AUTHORS: 2021 Sumo Bot Team
+ *
+ *Updated: February 28, 2021
+ *
+ *Demonstration of wall detection using front proximity sensors, 
+ *corrections using encoder data, utilizing gyroscope for fixed rotation
+ *
+*/
+
 #include <Wire.h>
 #include <Zumo32U4.h>
 #include "TurnSensor.h"
@@ -46,8 +57,6 @@ void loop() {
   /*conditional statement 
    *if we detect object we stop and turn else the bot moves forward*/
       if(isObject()) {
-          stopMotors(); 
-          delay(500); // delay for half a second
           turn(); 
         } else {
           motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
