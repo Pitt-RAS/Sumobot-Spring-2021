@@ -50,6 +50,7 @@ void loop() {
       
       if(isObject()) {
 
+
         stopMotors();
 
         
@@ -57,6 +58,10 @@ void loop() {
         
           motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
           delay(500); // delay for half a second 
+
+        stopMotors();
+ //         motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
+
 
           
 //          int16_t countsLeft = encoders.getCountsAndResetLeft();
@@ -111,7 +116,7 @@ void turn(){
       if(getAngle()<35 && getAngle()>0 ) {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
         } else if(getAngle()>-35 && getAngle()< 0 ) {
-          motors.setSpeeds(-motorSpeedLeft, -motorSpeedRight); 
+          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
         } else {
           motors.setSpeeds(0,0); 
           break;
