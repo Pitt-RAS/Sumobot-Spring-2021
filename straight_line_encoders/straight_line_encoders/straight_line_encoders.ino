@@ -1,9 +1,7 @@
-/*
-*PREPARING SENSORS FOR READING AND MERGING SOME BLOCKS OF THE CODE INTO FUNCTIONS
-*/
 #include <Wire.h>
 #include <Zumo32U4.h>
 #include "TurnSensor.h"
+
 
 Zumo32U4IMU imu;
 Zumo32U4Motors motors;
@@ -13,8 +11,6 @@ Zumo32U4Encoders encoders;
 Zumo32U4ProximitySensors proxSensors;
 Zumo32U4LCD lcd;
 
-//Prototype functions
-void readMotorValues();
 
 // Initial speeds for left and right motors (0-400)
 int16_t motorSpeedLeft  = 100;
@@ -28,10 +24,10 @@ unsigned long int lastEncoderTime;
 
 void setup() {
   
-  turnSensorSetup();
-  
+  /*Set up gyroscope*/
+  turnSensorSetup(); 
   buttonA.waitForButton(); // Wait for button A to be pressed to start
-
+  
   // Buzzer variables in case they need to be changed
   unsigned int buzzerFrequency = 261; // Middle C
   unsigned int buzzerDuration =  50; // In milliseconds
@@ -45,68 +41,50 @@ void setup() {
   
 }
 
-void loop() {
-  // reads the proximity sensors
-      
+void loop() {    
+  
+  /*conditional statement 
+   *if we detect object we stop and turn else the bot moves forward*/
       if(isObject()) {
-
-
           stopMotors(); 
-          motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
-          delay(500); // delay for half a second 
-
-   
- //         motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
-
-
-          
-//          int16_t countsLeft = encoders.getCountsAndResetLeft();
-//          int16_t countsRight = encoders.getCountsAndResetRight();
-//      
-//          //adjusts speed based on encoder data
-//          if(countsLeft < countsRight){
-//            motorSpeedLeft += 1;
-//            motorSpeedRight -= 1;
-//          } else if (countsLeft > countsRight){
-//            motorSpeedLeft -= 1;
-//            motorSpeedRight += 1;
-//          }
-        
-          
-        /**********************************/
-        turn(); 
+          delay(500); // delay for half a second
+          turn(); 
         } else {
           motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
-          readMotorValues();        
+          readMotorValues();//read encoder data to correct trajectory
           }
-
-   
-  
 }
 
-
+/*Fucntion to stop the motors when called*/
 void stopMotors() {
   motors.setSpeeds(0, 0);
   }
 
-  
+
 bool isObject() {
 
     /*Removed side proxSensors to just deal with front sensors (for now)*/
-  // stop both motors if an object is detected close to the front of the vehicle
+
+    /*Reads the value from the front two sensors and returns true or false
+     *true : if front sensors read 6 or greater
+    */
     proxSensors.read();
-  if (proxSensors.countsFrontWithLeftLeds() >= 6 || proxSensors.countsFrontWithRightLeds() >= 6){
-    return true; 
-  } else {return false;}
+    if (proxSensors.countsFrontWithLeftLeds() >= 6 || proxSensors.countsFrontWithRightLeds() >= 6){
+      return true; 
+    } else {
+      return false;
+    }
   
   }
 
+
 void turn(){
-    turnSensorUpdate();
+  
+    //turnSensorUpdate();
+    
     while(1){
       turnSensorUpdate();
-      
-      /*STOPS BETWEEN 170 ~ 180 AND -170 ~ -180*/
+      /*turns the bot until the gyroscope reads an angle of 35 degrees*/
       if(getAngle()<35 && getAngle()>0 ) {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
         } else if(getAngle()>-35 && getAngle()< 0 ) {
@@ -121,7 +99,7 @@ void turn(){
 }
 
 
-//Displays motors onto LCD
+/*Displays motors onto LCD*/
 void readMotorValues(){
     //reads encoders and adjusts speeds every 100 ms
   if ((millis() - lastEncoderTime) >= 100)
@@ -130,7 +108,7 @@ void readMotorValues(){
     int16_t countsLeft = encoders.getCountsAndResetLeft();
     int16_t countsRight = encoders.getCountsAndResetRight();
 
-    //adjusts speed based on encoder data
+    /*adjusts speed based on encoder data*/
     if(countsLeft < countsRight){
       motorSpeedLeft += 1;
       motorSpeedRight -= 1;
@@ -139,20 +117,18 @@ void readMotorValues(){
       motorSpeedRight += 1;
     }
 
-          /*Might delete if not necessary*/
-//    Serial.print(countsLeft);
-//    Serial.print("\t");
-//    Serial.print(countsRight);
-//    Serial.print("\t");
-//    Serial.print(motorSpeedLeft);
-//    Serial.print("\t");
-//    Serial.print(motorSpeedRight);
-//    Serial.print("\n"); 
-
-    // update LCD screen
-    lcd.clear();  // clears screen
+    Serial.print(countsLeft);
+    Serial.print("\t");
+    Serial.print(countsRight);
+    Serial.print("\t");
+    Serial.print(motorSpeedLeft);
+    Serial.print("\t");
+    Serial.print(motorSpeedRight);
+    Serial.print("\n"); 
 
     /*Removed CR and CL since string length is interfering with LCD display capacity*/
+    /* update LCD screen*/
+    lcd.clear();  // clears screen
     lcd.gotoXY(0,0); // sets position to line 
     lcd.print(countsLeft); // displays the countsLeft encoder
     lcd.gotoXY(0,1);
@@ -160,6 +136,8 @@ void readMotorValues(){
   }
 }
 
+
+/*function returns the turn angle read from the gyroscope in degrees*/
 int32_t getAngle() {
     return (((int32_t)turnAngle >> 16)*360)>>16; 
 
