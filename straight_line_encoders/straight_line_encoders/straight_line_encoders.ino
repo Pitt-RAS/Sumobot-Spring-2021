@@ -51,15 +51,11 @@ void loop() {
       if(isObject()) {
 
 
-        stopMotors();
-
-        
-        
-        
+          stopMotors(); 
           motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
           delay(500); // delay for half a second 
 
-        stopMotors();
+   
  //         motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
 
 
@@ -107,8 +103,6 @@ bool isObject() {
 
 void turn(){
     turnSensorUpdate();
-    
-    
     while(1){
       turnSensorUpdate();
       
