@@ -88,7 +88,7 @@ bool isObject() {
     /*Removed side proxSensors to just deal with front sensors (for now)*/
   // stop both motors if an object is detected close to the front of the vehicle
     proxSensors.read();
-  if (proxSensors.countsFrontWithLeftLeds() >= 5 || proxSensors.countsFrontWithRightLeds() >= 5){
+  if (proxSensors.countsFrontWithLeftLeds() >= 6 || proxSensors.countsFrontWithRightLeds() >= 6){
     return true; 
   } else {return false;}
   
