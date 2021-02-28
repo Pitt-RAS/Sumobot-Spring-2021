@@ -49,8 +49,7 @@ void loop() {
   // reads the proximity sensors
       
       if(isObject()) {
-        stopMotors();  
-        delay(initialDelay); 
+        stopMotors();
         
         for(uint8_t i=20;i>0;i--){
           motors.setSpeeds(-motorSpeedLeft,-motorSpeedRight);
