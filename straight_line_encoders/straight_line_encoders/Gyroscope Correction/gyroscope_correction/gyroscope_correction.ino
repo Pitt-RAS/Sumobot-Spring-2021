@@ -6,6 +6,7 @@
  *
  *Separates the start zumo bot and gyroscope calibration to their own buttons (A/B)
  *Tunes the gyroscope
+ *Implement side sensors to deal with wall detection
  *
 */
 
@@ -70,7 +71,7 @@ void stopMotors() {
   motors.setSpeeds(0, 0);
   }
 
-
+/*Function to determine if obstacle is in front of bot*/
 bool isObject() {
 
     /*Removed side proxSensors to just deal with front sensors (for now)*/
@@ -84,8 +85,7 @@ bool isObject() {
     } else {
       return false;
     }
-  
-  }
+}
 
 
 void turn(){
@@ -95,6 +95,10 @@ void turn(){
     while(1){
       turnSensorUpdate();
       /*turns the bot until the gyroscope reads an angle of 35 degrees*/
+
+     
+      //Temporarily disabled turn
+      /*
       if(getAngle()<35 && getAngle()>0 ) {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
         } else if(getAngle()>-35 && getAngle()< 0 ) {
@@ -103,6 +107,23 @@ void turn(){
           motors.setSpeeds(0,0); 
           break;
           }
+       */
+
+       if(proxSensors.countsLeftWithLeftLeds() >=6) {
+          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);    
+       } else if(proxSensors.countsRightWithRightLeds() >=6) {
+          motors.setSpeeds(-motorSpeedLeft, motorSpeedRight);
+       }
+       else {
+        if(getAngle()<35 && getAngle()>0 ) {
+          motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
+        } else if(getAngle()>-35 && getAngle()< 0 ) {
+          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
+        } else {
+          motors.setSpeeds(0,0); 
+          break;
+          }
+       }
       }  
       turnSensorReset(); //Reset gyroscope 
   
