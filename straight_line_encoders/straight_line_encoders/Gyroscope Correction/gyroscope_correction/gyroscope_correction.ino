@@ -37,8 +37,8 @@ unsigned long int lastEncoderTime;
 void setup() {
   
   /*Set up gyroscope*/
-  turnSensorSetup(); 
-  buttonA.waitForButton(); // Wait for button B to be pressed to start
+  turnSensorSetup(); //Wait for button B to calibrate turn sensor 
+  buttonA.waitForButton(); // Wait for button A to be pressed to start
   
   // Buzzer variables in case they need to be changed
   unsigned int buzzerFrequency = 261; // Middle C
