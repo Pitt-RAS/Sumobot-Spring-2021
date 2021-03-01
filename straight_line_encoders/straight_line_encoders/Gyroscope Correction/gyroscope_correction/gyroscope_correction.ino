@@ -1,11 +1,11 @@
 /*
  *ZUMO PROJECT 1
- *AUTHORS: 2021 Sumo Bot Team
+ *AUTHORS: Justin Cacal and Nate Mallick
  *
  *Updated: February 28, 2021
  *
- *Demonstration of wall detection using front proximity sensors, 
- *corrections using encoder data, utilizing gyroscope for fixed rotation
+ *Separates the start zumo bot and gyroscope calibration to their own buttons (A/B)
+ *Tunes the gyroscope
  *
 */
 
