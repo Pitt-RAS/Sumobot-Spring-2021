@@ -26,8 +26,8 @@ Zumo32U4LCD lcd;
 
 
 // Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 100;
-int16_t motorSpeedRight = 100;
+int16_t motorSpeedLeft  = 300;
+int16_t motorSpeedRight = 300;
 
 unsigned long initialDelay = 1000;
 
@@ -110,14 +110,23 @@ void turn(){
        */
 
        if(proxSensors.countsLeftWithLeftLeds() >=6) {
-          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);    
+        turnSensorReset();
+        do {
+          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
+        } while(getAngle()>-35 && getAngle()<0);
+        break;
+  
        } else if(proxSensors.countsRightWithRightLeds() >=6) {
+        turnSensorReset();
+        do {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight);
+        } while(getAngle()<35 && getAngle()>0);
+        break;
        }
        else {
-        if(getAngle()<35 && getAngle()>0 ) {
+        if(getAngle()<35 && getAngle()>0) {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
-        } else if(getAngle()>-35 && getAngle()< 0 ) {
+        } else if(getAngle()>-35 && getAngle()<0) {
           motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
         } else {
           motors.setSpeeds(0,0); 
