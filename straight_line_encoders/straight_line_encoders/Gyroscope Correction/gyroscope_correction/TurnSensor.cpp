@@ -41,6 +41,7 @@ The digital zero-rate level of the gyro can be as high as
 that. */
 void turnSensorSetup()
 {
+  buttonB.waitForButton();  
   Wire.begin();
   imu.init();
   imu.enableDefault();
@@ -70,10 +71,10 @@ void turnSensorSetup()
   gyroOffset = total / 1024;
 
   // Display the angle (in degrees from -180 to 180) until the
-  // user presses A.
+  // user presses B.
   lcd.clear();
   turnSensorReset();
-  while (!buttonA.getSingleDebouncedRelease())
+  while (!buttonB.getSingleDebouncedRelease())
   {
     turnSensorUpdate();
     lcd.gotoXY(0, 0);
@@ -82,6 +83,7 @@ void turnSensorSetup()
   }
   lcd.clear();
 }
+
 
 // This should be called to set the starting point for measuring
 // a turn.  After calling this, turnAngle will be 0.

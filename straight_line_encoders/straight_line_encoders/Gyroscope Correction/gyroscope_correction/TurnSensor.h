@@ -23,6 +23,6 @@ extern uint32_t turnAngle;
 extern int16_t turnRate;
 
 // These objects must be defined in your sketch.
-extern Zumo32U4ButtonA buttonA;
+extern Zumo32U4ButtonB buttonB;
 extern Zumo32U4LCD lcd;
 extern Zumo32U4IMU imu;

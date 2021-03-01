@@ -17,6 +17,7 @@
 Zumo32U4IMU imu;
 Zumo32U4Motors motors;
 Zumo32U4ButtonA buttonA;
+Zumo32U4ButtonB buttonB;
 Zumo32U4Buzzer buzzer;
 Zumo32U4Encoders encoders;
 Zumo32U4ProximitySensors proxSensors;
@@ -37,7 +38,7 @@ void setup() {
   
   /*Set up gyroscope*/
   turnSensorSetup(); 
-  buttonA.waitForButton(); // Wait for button A to be pressed to start
+  buttonA.waitForButton(); // Wait for button B to be pressed to start
   
   // Buzzer variables in case they need to be changed
   unsigned int buzzerFrequency = 261; // Middle C
