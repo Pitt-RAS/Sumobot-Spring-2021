@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/straight_line_encoders/straight_line_encoders/.vs
+/straight_line_encoders/straight_line_encoders/CppProperties.json
