@@ -41,7 +41,9 @@ The digital zero-rate level of the gyro can be as high as
 that. */
 void turnSensorSetup()
 {
-  buttonB.waitForButton();  
+  /**/
+  buttonB.waitForButton(); /*Optional button to start turnSensorSetup()*/
+  /**/
   Wire.begin();
   imu.init();
   imu.enableDefault();
