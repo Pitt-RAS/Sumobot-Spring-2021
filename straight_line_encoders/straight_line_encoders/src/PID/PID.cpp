@@ -1,10 +1,10 @@
 /*
  File:		PID.h
  Created:	3/1/2021
- Updated:   3/6/2021
+ Updated:	3/6/2021
  Author:	Ethan Markowski, Hudson Panning, Brian Randall
 
- Purpose:   PID controller library
+ Purpose:	PID controller library
 */
 
 #include "Arduino.h"
