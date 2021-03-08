@@ -26,8 +26,8 @@ Zumo32U4LCD lcd;
 
 
 // Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 400;
-int16_t motorSpeedRight = 400;
+int16_t motorSpeedLeft  = 100;
+int16_t motorSpeedRight = 100;
 
 unsigned long initialDelay = 1000;
 
@@ -156,6 +156,8 @@ void turn(){
         break;
        }
        else {
+        
+        
         if(getAngle()<35 && getAngle()>0) {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
         } else if(getAngle()>-35 && getAngle()<0) {
@@ -164,8 +166,35 @@ void turn(){
           motors.setSpeeds(0,0); 
           break;
           }
+          
+/*
+          if(proxSensors.countsFrontWithRightLeds() > proxSensors.countsFrontWithLeftLeds()) {
+            turnSensorUpdate();
+            do {
+              motors.setSpeeds(-motorSpeedLeft, motorSpeedRight);
+            } while(getAngle()<35 && getAngle()>0);
+            break;
+          } else if(proxSensors.countsFrontWithLeftLeds() > proxSensors.countsFrontWithRightLeds()) {
+            turnSensorUpdate();
+            do {
+              motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);
+            } while(getAngle()>-35 && getAngle()<0);
+            break;
+          } else {
+            turnSensorUpdate();
+            if(getAngle()<35 && getAngle()>0) {
+              motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
+            } else if(getAngle()>-35 && getAngle()<0) {
+              motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
+            } else {
+              motors.setSpeeds(0,0); 
+              break;
+              }
+          }
         }
+        */
        }
+      }
        turnSensorReset(); //Reset gyroscope 
 }
 
