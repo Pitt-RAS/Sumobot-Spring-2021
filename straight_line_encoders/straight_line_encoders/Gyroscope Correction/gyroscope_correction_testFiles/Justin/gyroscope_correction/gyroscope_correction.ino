@@ -1,4 +1,4 @@
-/*
+ /*
  *ZUMO PROJECT 1
  *AUTHORS: Justin Cacal and Nate Mallick
  *
@@ -13,6 +13,7 @@
 #include <Wire.h>
 #include <Zumo32U4.h>
 #include "TurnSensor.h"
+#include <PID.h>
 
 
 Zumo32U4IMU imu;
@@ -36,6 +37,8 @@ unsigned long initialDelay = 1000;
 unsigned long int lastEncoderTime;
 
 void setup() {
+  /*Set PID*/
+  setPID(0,0,0);
   
   /*Set up gyroscope*/
   turnSensorSetup(); //Wait for button B to calibrate turn sensor 
@@ -55,7 +58,6 @@ void setup() {
 }
 
 void loop() {    
-  
   /*conditional statement 
    *if we detect object we stop and turn else the bot moves forward*/
       if(isObject()) {
