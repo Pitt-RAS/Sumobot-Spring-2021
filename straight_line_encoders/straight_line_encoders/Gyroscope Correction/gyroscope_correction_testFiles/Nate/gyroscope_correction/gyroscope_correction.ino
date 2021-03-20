@@ -1,4 +1,4 @@
-/*
+ /*
  *ZUMO PROJECT 1
  *AUTHORS: Justin Cacal and Nate Mallick
  *
@@ -13,6 +13,7 @@
 #include <Wire.h>
 #include <Zumo32U4.h>
 #include "TurnSensor.h"
+#include <PID.h>
 
 
 Zumo32U4IMU imu;
@@ -26,8 +27,8 @@ Zumo32U4LCD lcd;
 
 
 // Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 300;
-int16_t motorSpeedRight = 300;
+int16_t motorSpeedLeft  = 100;
+int16_t motorSpeedRight = 100;
 
 unsigned long initialDelay = 1000;
 
@@ -36,6 +37,8 @@ unsigned long initialDelay = 1000;
 unsigned long int lastEncoderTime;
 
 void setup() {
+  /*Set PID*/
+  setPID(0,0,0);
   
   /*Set up gyroscope*/
   turnSensorSetup(); //Wait for button B to calibrate turn sensor 
@@ -55,7 +58,6 @@ void setup() {
 }
 
 void loop() {    
-  
   /*conditional statement 
    *if we detect object we stop and turn else the bot moves forward*/
       if(isObject()) {
@@ -97,7 +99,7 @@ void turn(){
       /*turns the bot until the gyroscope reads an angle of 35 degrees*/
 
      
-      //Temporarily disabled turn
+      //Turn V1
       /*
       if(getAngle()<35 && getAngle()>0 ) {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
@@ -109,10 +111,13 @@ void turn(){
           }
        */
 
+       //Turn V2
+       /*
        if(proxSensors.countsLeftWithLeftLeds() >=6) {
         turnSensorReset();
         do {
-          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
+          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);
+          turnSensorUpdate(); 
         } while(getAngle()>-35 && getAngle()<0);
         break;
   
@@ -120,6 +125,7 @@ void turn(){
         turnSensorReset();
         do {
           motors.setSpeeds(-motorSpeedLeft, motorSpeedRight);
+          turnSensorUpdate(); 
         } while(getAngle()<35 && getAngle()>0);
         break;
        }
@@ -133,9 +139,65 @@ void turn(){
           break;
           }
        }
-      }  
-      turnSensorReset(); //Reset gyroscope 
+       */
+
+       if(proxSensors.countsLeftWithLeftLeds() > proxSensors.countsRightWithRightLeds()) {
+        turnSensorUpdate();
+        do {
+          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);
+          turnSensorUpdate(); 
+        } while(getAngle()>-35 && getAngle()<0);
+        break;
   
+       } else if(proxSensors.countsRightWithRightLeds() > proxSensors.countsLeftWithLeftLeds()) {
+        turnSensorUpdate();
+        do {
+          motors.setSpeeds(-motorSpeedLeft, motorSpeedRight);
+          turnSensorUpdate(); 
+        } while(getAngle()<35 && getAngle()>0);
+        break;
+       }
+       else {
+        
+        
+        if(getAngle()<35 && getAngle()>0) {
+          motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
+        } else if(getAngle()>-35 && getAngle()<0) {
+          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
+        } else {
+          motors.setSpeeds(0,0); 
+          break;
+          }
+          
+/*
+          if(proxSensors.countsFrontWithRightLeds() > proxSensors.countsFrontWithLeftLeds()) {
+            turnSensorUpdate();
+            do {
+              motors.setSpeeds(-motorSpeedLeft, motorSpeedRight);
+            } while(getAngle()<35 && getAngle()>0);
+            break;
+          } else if(proxSensors.countsFrontWithLeftLeds() > proxSensors.countsFrontWithRightLeds()) {
+            turnSensorUpdate();
+            do {
+              motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);
+            } while(getAngle()>-35 && getAngle()<0);
+            break;
+          } else {
+            turnSensorUpdate();
+            if(getAngle()<35 && getAngle()>0) {
+              motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
+            } else if(getAngle()>-35 && getAngle()<0) {
+              motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
+            } else {
+              motors.setSpeeds(0,0); 
+              break;
+              }
+          }
+        }
+        */
+       }
+      }
+       turnSensorReset(); //Reset gyroscope 
 }
 
 
