@@ -1,12 +1,12 @@
-#ifndef ENCODERDISTANCE_H
-#define ENCDOERDISTANCE_H
+#ifndef DETECTEDOBJECT_H
+#define DETECTEDOBJECT_H
 
 
 
 #include <Wire.h>
 #include <Zumo32U4.h>
 
-class encoderDistance {
+class detectedObject {
     public:
         unsigned long distanceCentimeters;
         

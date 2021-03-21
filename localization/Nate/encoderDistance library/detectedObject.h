@@ -2,21 +2,17 @@
 #define DETECTEDOBJECT_H
 
 
-
-
-#include "Zumo32U4Encoders.h"
-
 class detectedObject {
     public:
+         
         unsigned long distanceFromBot;
+        long xAxis, yAxis, angle; 
+        unsigned long convert();
 
     private:
         detectedObject();
+        detectedObject(long);
         void update(); 
-        
-        
-        
-    
         
 
 }; 
