@@ -23,8 +23,8 @@ Zumo32U4LCD lcd;
 
 
 // Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 50;
-int16_t motorSpeedRight = 50;
+int16_t motorSpeedLeft  = 200;
+int16_t motorSpeedRight = 25;
 
 unsigned long initialDelay = 1000;
 
@@ -49,9 +49,9 @@ void loop() {
     int16_t countsLeft = encoders.getCountsRight();
     int16_t countsRight = encoders.getCountsLeft();
     displayMotorValues(countsLeft, countsRight); 
-    if(countsLeft >= 909.7) {
-      stopMotors(); 
-    }
+//    if(countsLeft >= 909.7) {
+//      stopMotors(); 
+//    }
     
 }
 
