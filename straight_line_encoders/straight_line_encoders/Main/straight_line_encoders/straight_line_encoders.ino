@@ -24,8 +24,8 @@ Zumo32U4LCD lcd;
 
 
 // Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 100;
-int16_t motorSpeedRight = 100;
+int16_t motorSpeedLeft  = 200;
+int16_t motorSpeedRight = 200;
 
 unsigned long initialDelay = 1000;
 

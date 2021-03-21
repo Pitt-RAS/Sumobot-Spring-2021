@@ -47,7 +47,10 @@ void turnSensorSetup()
   imu.configureForTurnSensing();
 
   lcd.clear();
-  lcd.print(F("Gyro cal"));
+  lcd.gotoXY(0,0);
+  lcd.print(F("Press A"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("whenDone"));
 
   // Turn on the yellow LED in case the LCD is not available.
   ledYellow(1);
@@ -70,7 +73,7 @@ void turnSensorSetup()
   gyroOffset = total / 1024;
 
   // Display the angle (in degrees from -180 to 180) until the
-  // user presses A.
+  // user presses B.
   lcd.clear();
   turnSensorReset();
   while (!buttonA.getSingleDebouncedRelease())

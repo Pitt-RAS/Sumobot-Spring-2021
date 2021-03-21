@@ -1,5 +1,5 @@
 /*  ORGANIZATION: Pitt-RAS
- *  AUTHORS:      Killian Rush, Mark Hofmeister, Morgan Visnesky
+ *  AUTHORS:      Sumobot Spring 2021 Team
  *  DATE:         3/20/2021
  *  DESCRIPTION:
  *    Combination of straight line encoder and linefollow code
@@ -9,14 +9,17 @@
 #include <Zumo32U4.h>
 #include "TurnSensor.h"
 
-const uint16_t maxSpeed = 200;
+const uint16_t maxSpeed = 400;
 
 Zumo32U4IMU imu;
 Zumo32U4Motors motors;
 Zumo32U4ButtonA buttonA;
+Zumo32U4ButtonB buttonB;
+Zumo32U4ButtonC buttonC;
 Zumo32U4Buzzer buzzer;
 Zumo32U4Encoders encoders;
 Zumo32U4ProximitySensors proxSensors;
+Zumo32U4LineSensors lineSensors;
 Zumo32U4LCD lcd;
 
 float Kp = 0.4; // Proportional Term
@@ -35,8 +38,8 @@ unsigned int lineSensorValues[numSensors];
 int leftSpeed = 0, rightSpeed = 0;
 
 // Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 100;
-int16_t motorSpeedRight = 100;
+int16_t motorSpeedLeft  = 300;
+int16_t motorSpeedRight = 300;
 
 unsigned long initialDelay = 1000;
 
@@ -65,8 +68,23 @@ void calibrateSensors()
   motors.setSpeeds(0, 0);
 }
 
+
 void setup()
 {
+
+  lcd.clear(); 
+  lcd.print(F("A-LinFol"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("B-Obvoid"));
+
+  while(option == 0) {
+    if (buttonA.isPressed()) {
+      option = 1;
+    }
+    else if (buttonB.isPressed()) {
+      option = 2;
+    }
+  }
   
   if (option == 1)
   {
@@ -100,12 +118,24 @@ void setup()
   else
   {
     /*Set up gyroscope*/
-    turnSensorSetup(); 
-    buttonA.waitForButton(); // Wait for button A to be pressed to start
+    turnSensorSetup();
+    lcd.clear();
+    lcd.gotoXY(0,0);
+    lcd.print(F("Press A"));
+    lcd.gotoXY(0,1);
+    lcd.print(F("to finish"));
+    
+    lcd.clear();
+    lcd.gotoXY(0,0);
+    lcd.print(F("Press B"));
+    lcd.gotoXY(0,1);
+    lcd.print(F("to begin"));
+
+    buttonB.waitForButton(); // Wait for button B to be pressed to start
     
     // Buzzer variables in case they need to be changed
     unsigned int buzzerFrequency = 261; // Middle C
-    unsigned int buzzerDuration =  50; // In milliseconds
+    unsigned int buzzerDuration =  200; // In milliseconds
     unsigned char buzzerVolume = 10; // On scale of 0-15
     
     
@@ -170,11 +200,8 @@ void loop()
         readMotorValues();//read encoder data to correct trajectory
         }
   }
+}
 
-/*Fucntion to stop the motors when called*/
-void stopMotors() {
-  motors.setSpeeds(0, 0);
-  }
 
 
 bool isObject() {
@@ -192,7 +219,19 @@ bool isObject() {
     }
   
   }
+  
 
+/*Fucntion to stop the motors when called*/
+void stopMotors() {
+  motors.setSpeeds(0, 0);
+  }
+
+
+/*function returns the turn angle read from the gyroscope in degrees*/
+int32_t getAngle() {
+    return (((int32_t)turnAngle >> 16)*360)>>16; 
+
+ }
 
 void turn(){
   
@@ -213,7 +252,6 @@ void turn(){
       turnSensorReset(); //Reset gyroscope 
   
 }
-
 
 /*Displays motors onto LCD*/
 void readMotorValues(){
@@ -251,10 +289,3 @@ void readMotorValues(){
     lcd.print(countsRight);// displays the countsRight encoder
   }
 }
-
-
-/*function returns the turn angle read from the gyroscope in degrees*/
-int32_t getAngle() {
-    return (((int32_t)turnAngle >> 16)*360)>>16; 
-
- }
