@@ -2,9 +2,7 @@
 #define ENCDOERDISTANCE_H
 
 
-
-#include <Wire.h>
-#include <Zumo32U4.h>
+#include "Zumo32U4Encoders.h"
 
 class encoderDistance {
     public:
