@@ -7,7 +7,7 @@
 detectedObject::detectedObject() {
     xAxis = 0; 
     yAxis = 0; 
-    distanceFromBot = sqrt(pow(cos(xAxis)) + pow(sin(yAxis))); 
+    distanceFromBot = sqrt(pow(xAxis, 2) + pow(yAxis, 2)); 
 }
 
 /**

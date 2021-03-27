@@ -1,6 +1,7 @@
 #ifndef DETECTEDOBJECT_H
 #define DETECTEDOBJECT_H
 #include <math.h> 
+#include <stdint.h> 
 
 
 class detectedObject {

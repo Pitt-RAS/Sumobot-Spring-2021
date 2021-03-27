@@ -12,36 +12,31 @@
 
 #include <Wire.h>
 #include <Zumo32U4.h>
-
-
-
+#include "detectedObject.h"
+#include "detectedObject.cpp"
 
 Zumo32U4Motors motors;
 Zumo32U4ButtonA buttonA;
 Zumo32U4Encoders encoders;
 Zumo32U4LCD lcd;
 
+ 
 
 // Initial speeds for left and right motors (0-400)
 int16_t motorSpeedLeft  = 200;
 int16_t motorSpeedRight = 25;
-
 unsigned long initialDelay = 1000;
-
 
 //declare for use in encoder adjustment
 unsigned long int lastEncoderTime;
 
 void setup() {
-  
-  
-  
   buttonA.waitForButton(); // Wait for button A to be pressed to start  
-  
   delay(initialDelay); // Delay robot so it doesn't immediately move after pressing button A
   //lastEncoderTime = millis(); //sets initial value
   motors.setSpeeds(motorSpeedLeft, motorSpeedRight);
   
+  //detectedObject origin; //set the origin  
 }
 
 void loop() {    
