@@ -8,14 +8,13 @@ class detectedObject {
     private:
         unsigned long distanceFromBot;
         long xAxis, yAxis, angle; 
-        unsigned long convert(int16_t);
+        
 
     public:
         detectedObject();
         detectedObject(long);
         unsigned long getDistance() const; 
-        void update(); 
-        
+        unsigned long convert(int16_t);
 
 }; 
 

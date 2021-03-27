@@ -38,5 +38,5 @@ unsigned long detectedObject::getDistance() const {return distanceFromBot;}
  * @return: distance from the encoder 
 */
 unsigned long detectedObject::convert(int16_t data) {
-    return (data/909.7)*(3.81); 
+    return (data/909.7)*(2*M_PI*(3.7/2)); 
 }
