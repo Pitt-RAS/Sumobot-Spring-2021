@@ -1,20 +1,25 @@
 #ifndef DETECTEDOBJECT_H
 #define DETECTEDOBJECT_H
 #include <math.h> 
-#include <stdint.h> 
+#include "TurnSensor.h"
 
+  
 
 class detectedObject {
     private:
-        unsigned long distanceFromBot;
-        long xAxis, yAxis, angle; 
-        
+        float distanceFromBot;
+        float xAxis, yAxis;
+        int32_t angle; 
+        const float sprocketCirc = 2*M_PI*(3.7/2);
 
     public:
         detectedObject();
-        detectedObject(long);
-        unsigned long getDistance() const; 
-        unsigned long convert(int16_t);
+        detectedObject(float);
+        float getDistance(); 
+        int32_t getBotAngle(); 
+        float convert(int16_t); 
+        void updateDistance(int16_t, int32_t); 
+        
 
 }; 
 

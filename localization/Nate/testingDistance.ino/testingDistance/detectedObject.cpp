@@ -1,5 +1,7 @@
 #include "detectedObject.h"  
 
+
+
 /**
  * Default Constructor
  * @def : Sets the ORIGIN at the bots location 
@@ -7,7 +9,7 @@
 detectedObject::detectedObject() {
     xAxis = 0; 
     yAxis = 0; 
-    distanceFromBot = sqrt(pow(xAxis, 2) + pow(yAxis, 2)); 
+    distanceFromBot = 0; 
 }
 
 /**
@@ -17,10 +19,10 @@ detectedObject::detectedObject() {
  * @def : sets the of the ojbect from the bot to be SOLELY on the x-axis  ( for testing )
  * 
  * */
-detectedObject::detectedObject(long dist) {
+detectedObject::detectedObject(float dist) {
     xAxis = dist; 
     yAxis = 0; 
-    distanceFromBot = sqrt(pow(xAxis, 2) + pow(yAxis, 2)); 
+    distanceFromBot = dist; 
 }
 
 
@@ -28,7 +30,9 @@ detectedObject::detectedObject(long dist) {
  * @return : distance calculated by the bot from the object.
  * 
 */
-unsigned long detectedObject::getDistance() const {return distanceFromBot;}
+float detectedObject::getDistance() {return distanceFromBot;}
+
+int32_t detectedObject::getBotAngle() {return angle;}
 
 /** Accepts data from the encoder and converts it into distance of centimeters
  *  909.7 counts per rotation
@@ -37,6 +41,18 @@ unsigned long detectedObject::getDistance() const {return distanceFromBot;}
  * @param : 16 bit int from that accepts data from encoders
  * @return: distance from the encoder 
 */
-unsigned long detectedObject::convert(int16_t data) {
-    return (data/909.7)*(2*M_PI*(3.7/2)); 
+float detectedObject::convert(int16_t data) {
+    return (data/909.7)*(sprocketCirc); 
+}
+
+/**
+ * Update the distance of this instance of the object everytime the bot moves
+ * 
+ * @param : takes input from the encoders as CPR
+*/
+void detectedObject::updateDistance(int16_t data, int32_t angle) {
+    this -> angle = angle; 
+    xAxis = convert(data)*cos(angle); 
+    yAxis = convert(data)*sin(angle); 
+    distanceFromBot = sqrt(pow(xAxis, 2) + pow(yAxis, 2));
 }
