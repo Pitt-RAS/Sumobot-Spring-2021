@@ -7,7 +7,7 @@
 detectedObject::detectedObject() {
     xAxis = 0; 
     yAxis = 0; 
-    distanceFromBot = sqrt(pow(cos(xAxis)) + pow(sin(yAxis))); 
+    distanceFromBot = 0; 
 }
 
 /**
@@ -20,7 +20,7 @@ detectedObject::detectedObject() {
 detectedObject::detectedObject(long dist) {
     xAxis = dist; 
     yAxis = 0; 
-    distanceFromBot = sqrt(pow(xAxis, 2) + pow(yAxis, 2)); 
+    distanceFromBot = dist; 
 }
 
 
@@ -37,6 +37,23 @@ unsigned long detectedObject::getDistance() const {return distanceFromBot;}
  * @param : 16 bit int from that accepts data from encoders
  * @return: distance from the encoder 
 */
-unsigned long detectedObject::convert(int16_t data) {
+long detectedObject::convert(int16_t data) {
     return (data/909.7)*(3.81); 
 }
+
+/**
+ * Update the distance of this instance of the object everytime the bot moves
+ * 
+ * @param : takes input from the encoders as CPR
+*/
+void detectedObject::update(int16_t data) {
+    angle += getBotAngle(); 
+    xAxis += convert(data)*cos(angle); 
+    yAxis += convert(data)*sin(angle); 
+    distanceFromBot = sqrt(pow(xAxis, 2) + pow(yAxis, 2));
+}
+
+/*function returns the turn angle read from the gyroscope in degrees*/
+int32_t detectedObject::getBotAngle() {
+    return (((int32_t)turnAngle >> 16)*360)>>16; 
+ }
