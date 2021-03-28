@@ -189,16 +189,20 @@ void loop()
         exit(0);
     }
   }
+
   else
   {
-   /*conditional statement 
-   *if we detect object we stop and turn else the bot moves forward*/
-    if(isObject()) {
+    /*conditional statement 
+    *if we detect object we stop and turn else the bot moves forward*/
+    if(isObject()) 
+    {
         turn(); 
-      } else {
-        motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
-        readMotorValues();//read encoder data to correct trajectory
-        }
+    } 
+    
+    else 
+    {
+        straight();
+    }
   }
 }
 
@@ -251,6 +255,13 @@ void turn(){
       }  
       turnSensorReset(); //Reset gyroscope 
   
+}
+
+// Drive in a straight line with encoder feedback to correct trajectory
+void straight()
+{
+    motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
+    readMotorValues();//read encoder data to correct trajectory
 }
 
 /*Displays motors onto LCD*/
