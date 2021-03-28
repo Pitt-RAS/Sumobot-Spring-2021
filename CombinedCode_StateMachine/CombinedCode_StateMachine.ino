@@ -2,7 +2,7 @@
  *  AUTHORS:      Sumobot Spring 2021 Team
  *  DATE:         3/20/2021
  *  DESCRIPTION:
- *    Combination of straight line encoder and linefollow code
+ *    Object avoidance and line follower code reorganized into a state machine
  */
 
 #include <Wire.h>
