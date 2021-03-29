@@ -28,15 +28,7 @@ float Ki = 0; // Integral Term
 
 #define numSensors 5
 unsigned int lineSensorValues[numSensors];
-
-// Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 300;
-int16_t motorSpeedRight = 300;
-
 unsigned long initialDelay = 1000;
-
-//declare for use in encoder adjustment
-unsigned long int lastEncoderTime;
 
 //lineFollowState Vars
 int leftSpeed = 0, rightSpeed = 0;
@@ -44,6 +36,11 @@ double previousTime = 0;
 double totalError = 0; // Accumulated Error
 double lastError = 0; // Error from last sensor reading.
 double derivError; // Derivative of error taken over the last time step
+
+//straightState/turnState
+int16_t motorSpeedLeft  = 300;// Initial speeds for left and right motors (0-400)
+int16_t motorSpeedRight = 300;
+unsigned long int lastEncoderTime; //declare for use in encoder adjustment
 
 enum States { Idle, CalibrateLineFollow, LineFollow, CalibrateStraight, Straight, Turn };
 States state = Idle;
@@ -101,8 +98,8 @@ void loop()
       break;  
   }
   if (buttonC.isPressed()) {
-      motors.setSpeeds(0,0);
-      exit(0);
+      stopMotors();
+      state = Idle;
   }
 }
 
@@ -245,6 +242,7 @@ void calibrateLineFollowState()
     lineSensors.calibrate();
   }
   motors.setSpeeds(0, 0);
+  state = LineFollow;
 }
 
 //LineFollow State
