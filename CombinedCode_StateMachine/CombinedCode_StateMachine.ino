@@ -92,22 +92,17 @@ void loop()
 
     case Straight:
       straightState();
+      if (isObject) { state = Turn; }
       break;
 
     case Turn:
       turnState();
+      if (!isObject) { state = Straight;  }
       break;  
   }
   if (buttonC.isPressed()) {
       motors.setSpeeds(0,0);
       exit(0);
-  }
-
-  else
-  {
-    /*conditional statement 
-    *if we detect object we stop and turn else the bot moves forward*/
-    
   }
 }
 
@@ -141,33 +136,6 @@ int32_t getAngle() {
     return (((int32_t)turnAngle >> 16)*360)>>16; 
 
  }
-
-void turn(){
-  
-    //turnSensorUpdate();
-    
-    while(1){
-      turnSensorUpdate();
-      /*turns the bot until the gyroscope reads an angle of 35 degrees*/
-      if(getAngle()<35 && getAngle()>0 ) {
-          motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
-        } else if(getAngle()>-35 && getAngle()< 0 ) {
-          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
-        } else {
-          motors.setSpeeds(0,0); 
-          break;
-          }
-      }  
-      turnSensorReset(); //Reset gyroscope 
-  
-}
-
-// Drive in a straight line with encoder feedback to correct trajectory
-void straight()
-{
-    motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
-    readMotorValues();//read encoder data to correct trajectory
-}
 
 /*Displays motors onto LCD*/
 void readMotorValues(){
@@ -317,12 +285,31 @@ void lineFollowState()
   previousTime = currentTime;
 }
 
+// Straight state
 void straightState()
 {
-  //Straight Line code
+    motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
+    readMotorValues();//read encoder data to correct trajectory
 }
 
+// Turn state
 void turnState()
 {
-  //Turn code
+    //turnSensorUpdate();
+
+    while (1) {
+        turnSensorUpdate();
+        /*turns the bot until the gyroscope reads an angle of 35 degrees*/
+        if (getAngle() < 35 && getAngle() > 0) {
+            motors.setSpeeds(-motorSpeedLeft, motorSpeedRight);
+        }
+        else if (getAngle() > -35 && getAngle() < 0) {
+            motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);
+        }
+        else {
+            motors.setSpeeds(0, 0);
+            break;
+        }
+    }
+    turnSensorReset(); //Reset gyroscope 
 }
