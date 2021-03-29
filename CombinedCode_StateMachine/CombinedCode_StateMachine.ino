@@ -1,6 +1,6 @@
 /*  ORGANIZATION: Pitt-RAS
  *  AUTHORS:      Sumobot Spring 2021 Team
- *  DATE:         3/20/2021
+ *  DATE:         3/29/2021
  *  DESCRIPTION:
  *    Object avoidance and line follower code reorganized into a state machine
  */
