@@ -187,7 +187,7 @@ void idleState()
     }
 }
 
-//Idle State
+// Straight Calibration State
 void calibrateStraightState()
 {
   /*Set up gyroscope*/
@@ -226,7 +226,7 @@ void calibrateStraightState()
   }
 }
 
-//Line Follow Callibration State
+//Line Follow Calibration State
 void calibrateLineFollowState()
 {
   for(int i = 0; i < 120; i++)
@@ -283,14 +283,14 @@ void lineFollowState()
   previousTime = currentTime;
 }
 
-// Straight state
+// Straight State
 void straightState()
 {
     motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
     readMotorValues();//read encoder data to correct trajectory
 }
 
-// Turn state
+// Turn State
 void turnState()
 {
     //turnSensorUpdate();
