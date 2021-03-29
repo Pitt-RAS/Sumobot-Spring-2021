@@ -15,7 +15,7 @@ class encoderDistance{
         int16_t encoder;
 
         int32_t getAngle();
-        int32_t turnAround();
+        void turnAround();
         
     public:
         encoderDistance();

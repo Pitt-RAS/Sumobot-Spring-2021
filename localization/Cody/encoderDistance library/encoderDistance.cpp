@@ -16,7 +16,7 @@ void encoderDistance::setDistance(){
 }
 
 void encoderDistance::returnToOrigin(){
-    //turnAround
+    turnAround();
     int16_t originEncoder = (getDistance()/3.81)*909.7;
     //motors.encoder(originEncoder)
 
@@ -27,11 +27,25 @@ int32_t encoderDistance::getAngle() {
 
 }
 
-int32_t encoderDistance::turnAround(){
+void encoderDistance::turnAround(){
     Zumo32U4Motors motors;
 
     int16_t motorSetSpeedLeft = 200;
     int16_t motorSetSpeedRight = 200;
 
-    if(getAngle() < )
+    while(1){
+        turnSensorUpdate();
+        if(getAngle() < 180 && getAngle() > 0){
+            motors.setSpeeds(-motorSetSpeedLeft, motorSetSpeedRight);
+        } else if (getAngle() < 0 && getAngle() > -180)
+        {
+            motors.setSpeeds(motorSetSpeedLeft, -motorSetSpeedRight);
+        } else{
+            motors.setSpeeds(0,0);
+            break;
+        }
+    }
+
+    turnSensorReset();
+    
 }
