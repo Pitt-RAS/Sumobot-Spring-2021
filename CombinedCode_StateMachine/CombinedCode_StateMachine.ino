@@ -1,6 +1,6 @@
 /*  ORGANIZATION: Pitt-RAS
  *  AUTHORS:      Sumobot Spring 2021 Team
- *  DATE:         3/20/2021
+ *  DATE:         3/29/2021
  *  DESCRIPTION:
  *    Object avoidance and line follower code reorganized into a state machine
  */
@@ -26,183 +26,80 @@ float Kp = 0.4; // Proportional Term
 float Kd = 9; // Derivative Term
 float Ki = 0; // Integral Term
 
-double lastError = 0; // Error from last sensor reading.
-double totalError = 0; // Accumulated error.
-double derivError; // Derivative of error taken over the last time step
-
-double previousTime = 0;
-double elapsedTime;
-
 #define numSensors 5
 unsigned int lineSensorValues[numSensors];
-int leftSpeed = 0, rightSpeed = 0;
-
-// Initial speeds for left and right motors (0-400)
-int16_t motorSpeedLeft  = 300;
-int16_t motorSpeedRight = 300;
-
 unsigned long initialDelay = 1000;
 
-//declare for use in encoder adjustment
-unsigned long int lastEncoderTime;
+//lineFollowState Vars
+int leftSpeed = 0, rightSpeed = 0;
+double previousTime = 0;
+double totalError = 0; // Accumulated Error
+double lastError = 0; // Error from last sensor reading.
+double derivError; // Derivative of error taken over the last time step
 
-int option = 0;
+//straightState/turnState
+int16_t motorSpeedLeft  = 300;// Initial speeds for left and right motors (0-400)
+int16_t motorSpeedRight = 300;
+unsigned long int lastEncoderTime; //declare for use in encoder adjustment
 
-//Necessary to calibrate for the environment
-void calibrateSensors()
-{
-  lcd.clear();
-  delay(1000);
-  for(int i = 0; i < 120; i++)
-  {
-    if (i > 30 && i <= 90)
-    {
-      motors.setSpeeds(-200, 200);
-    }
-    else
-    {
-      motors.setSpeeds(200, -200);
-    }
-    lineSensors.calibrate();
-  }
-  motors.setSpeeds(0, 0);
-}
+enum States { Idle, CalibrateLineFollow, LineFollow, CalibrateStraight, Straight, Turn };
+States state = Idle;
 
 
 void setup()
 {
+  //motors.flipLeftMotor(true);
+  //motors.flipRightMotor(true);
 
-  lcd.clear(); 
-  lcd.print(F("A-LinFol"));
+  //Initialized sensors
+  lineSensors.initFiveSensors();
+
+  //Press A to Go
+  lcd.clear();
+  lcd.print(F("Press A"));
   lcd.gotoXY(0,1);
-  lcd.print(F("B-Obvoid"));
+  lcd.print(F("to begin"));
+  buttonA.waitForButton();
 
-  while(option == 0) {
-    if (buttonA.isPressed()) {
-      option = 1;
-    }
-    else if (buttonB.isPressed()) {
-      option = 2;
-    }
-  }
-  
-  if (option == 1)
-  {
-    //motors.flipLeftMotor(true);
-    //motors.flipRightMotor(true);
-  
-    //Initialized sensors
-    lineSensors.initFiveSensors();
-  
-    //Calibration loop
-    lcd.clear();
-    lcd.print(F("Press A"));
-    lcd.gotoXY(0, 1);
-    lcd.print(F("to calibrate"));
-    buttonA.waitForButton();
-  
-    //Spins robt around to expose it to an environment of variable refelectance
-    calibrateSensors();
-  
-    //Press A to Go
-    lcd.clear();
-    lcd.print(F("Press A"));
-    lcd.gotoXY(0,1);
-    lcd.print(F("to begin"));
-    buttonA.waitForButton();
-  
-    delay(500);
-    lcd.clear();
-    lcd.print(F("Operating"));
-  }
-  else
-  {
-    /*Set up gyroscope*/
-    turnSensorSetup();
-    lcd.clear();
-    lcd.gotoXY(0,0);
-    lcd.print(F("Press A"));
-    lcd.gotoXY(0,1);
-    lcd.print(F("to finish"));
-    
-    lcd.clear();
-    lcd.gotoXY(0,0);
-    lcd.print(F("Press B"));
-    lcd.gotoXY(0,1);
-    lcd.print(F("to begin"));
-
-    buttonB.waitForButton(); // Wait for button B to be pressed to start
-    
-    // Buzzer variables in case they need to be changed
-    unsigned int buzzerFrequency = 261; // Middle C
-    unsigned int buzzerDuration =  200; // In milliseconds
-    unsigned char buzzerVolume = 10; // On scale of 0-15
-    
-    
-    buzzer.playFrequency(buzzerFrequency, buzzerDuration, buzzerVolume); // Play buzzer
-    delay(initialDelay); // Delay robot so it doesn't immediately move after pressing button A
-    lastEncoderTime = millis(); //sets initial value
-    proxSensors.initThreeSensors(); // configures proxSensors to use all three sensors
-  }
+  delay(500);
+  lcd.clear();
+  lcd.print(F("Operating"));
 }
 
 void loop()
 {
-  if (option == 1)
-  {
-    double currentTime = millis();
-    elapsedTime = (currentTime - previousTime);
-  
-    //Reads the line sensor values. If there is no error, and a black
-    //line is detected, position will be 2000.
-    int position = lineSensors.readLine(lineSensorValues);
-  
-    // 2000 means that the black line is directly below sensor #2 of the 5 sensor array.
-    // sensors = [0 1 2 3 4], values = [0 1000 2000 3000 4000]
-    // So when position reads 0 the black line is under sensor 0,
-    // when position reads 4000 it is under sensor 4.
-  
-    int error = 2000 - position;
-    totalError += error * elapsedTime;
-    derivError = (error-lastError) / elapsedTime;
-  
-    //Uses PID control to adjust the speed
-    int speedDifference = (Kp * error) + (Ki * totalError) + (Kd * derivError);
-    lastError = error;
-  
-    //If the speed difference is positive, the right motor is going faster than the left.
-    //This means that the right motor speed will be decreased by the speed difference.
-     leftSpeed = (int)maxSpeed - speedDifference;
-     rightSpeed = (int)maxSpeed + speedDifference;
-  
-    //The contrain function will instill a domain for the speed - it has to be
-    // >= 0 and <= maxSpeed. This function will fix that.
-    leftSpeed = constrain(leftSpeed, 0, (int)maxSpeed);
-    rightSpeed = constrain(rightSpeed, 0, (int)maxSpeed);
-  
-    motors.setSpeeds(leftSpeed, rightSpeed);
-    //Serial.print(position);
-  
-    previousTime = currentTime;
-    if (buttonC.isPressed()) {
-        motors.setSpeeds(0,0);
-        exit(0);
-    }
-  }
 
-  else
+  switch(state)
   {
-    /*conditional statement 
-    *if we detect object we stop and turn else the bot moves forward*/
-    if(isObject()) 
-    {
-        turn(); 
-    } 
-    
-    else 
-    {
-        straight();
-    }
+    case Idle:
+      idleState();
+      break;
+
+    case CalibrateLineFollow:
+      calibrateLineFollowState();
+      break;
+
+    case LineFollow:
+      lineFollowState();
+      break;
+
+    case CalibrateStraight:
+      calibrateStraightState();
+      break;
+
+    case Straight:
+      straightState();
+      if (isObject) { state = Turn; }
+      break;
+
+    case Turn:
+      turnState();
+      if (!isObject) { state = Straight;  }
+      break;  
+  }
+  if (buttonC.isPressed()) {
+      stopMotors();
+      state = Idle;
   }
 }
 
@@ -236,33 +133,6 @@ int32_t getAngle() {
     return (((int32_t)turnAngle >> 16)*360)>>16; 
 
  }
-
-void turn(){
-  
-    //turnSensorUpdate();
-    
-    while(1){
-      turnSensorUpdate();
-      /*turns the bot until the gyroscope reads an angle of 35 degrees*/
-      if(getAngle()<35 && getAngle()>0 ) {
-          motors.setSpeeds(-motorSpeedLeft, motorSpeedRight); 
-        } else if(getAngle()>-35 && getAngle()< 0 ) {
-          motors.setSpeeds(motorSpeedLeft, -motorSpeedRight); 
-        } else {
-          motors.setSpeeds(0,0); 
-          break;
-          }
-      }  
-      turnSensorReset(); //Reset gyroscope 
-  
-}
-
-// Drive in a straight line with encoder feedback to correct trajectory
-void straight()
-{
-    motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
-    readMotorValues();//read encoder data to correct trajectory
-}
 
 /*Displays motors onto LCD*/
 void readMotorValues(){
@@ -299,4 +169,145 @@ void readMotorValues(){
     lcd.gotoXY(0,1);
     lcd.print(countsRight);// displays the countsRight encoder
   }
+}
+
+//Idle State
+void idleState()
+{
+  lcd.clear(); 
+    lcd.print(F("A-LinFol"));
+    lcd.gotoXY(0,1);
+    lcd.print(F("B-Obvoid"));
+    
+    if (buttonA.isPressed()) {
+      state = CalibrateLineFollow;
+    }
+    else if (buttonB.isPressed()) {
+      state = CalibrateStraight;
+    }
+}
+
+// Straight Calibration State
+void calibrateStraightState()
+{
+  /*Set up gyroscope*/
+  turnSensorSetup();
+  lcd.clear();
+  lcd.gotoXY(0,0);
+  lcd.print(F("Press A"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("to finish"));
+  
+  lcd.clear();
+  lcd.gotoXY(0,0);
+  lcd.print(F("Press B"));
+  lcd.gotoXY(0,1);
+  lcd.print(F("to begin"));
+  
+  buttonB.waitForButton(); // Wait for button B to be pressed to start
+  
+  // Buzzer variables in case they need to be changed
+  unsigned int buzzerFrequency = 261; // Middle C
+  unsigned int buzzerDuration =  200; // In milliseconds
+  unsigned char buzzerVolume = 10; // On scale of 0-15
+  
+  
+  buzzer.playFrequency(buzzerFrequency, buzzerDuration, buzzerVolume); // Play buzzer
+  delay(initialDelay); // Delay robot so it doesn't immediately move after pressing button A
+  lastEncoderTime = millis(); //sets initial value
+  proxSensors.initThreeSensors(); // configures proxSensors to use all three sensors
+  if(isObject()) 
+  {
+    state = Turn; 
+  } 
+  else 
+  {
+    state = Straight;
+  }
+}
+
+//Line Follow Calibration State
+void calibrateLineFollowState()
+{
+  for(int i = 0; i < 120; i++)
+  {
+    if (i > 30 && i <= 90)
+    {
+      motors.setSpeeds(-200, 200);
+    }
+    else
+    {
+      motors.setSpeeds(200, -200);
+    }
+    lineSensors.calibrate();
+  }
+  motors.setSpeeds(0, 0);
+  state = LineFollow;
+}
+
+//LineFollow State
+void lineFollowState()
+{
+  double currentTime = millis();
+  double elapsedTime = (currentTime - previousTime);
+
+  //Reads the line sensor values. If there is no error, and a black
+  //line is detected, position will be 2000.
+  int position = lineSensors.readLine(lineSensorValues);
+
+  // 2000 means that the black line is directly below sensor #2 of the 5 sensor array.
+  // sensors = [0 1 2 3 4], values = [0 1000 2000 3000 4000]
+  // So when position reads 0 the black line is under sensor 0,
+  // when position reads 4000 it is under sensor 4.
+
+  int error = 2000 - position;
+  totalError += error * elapsedTime;
+  derivError = (error-lastError) / elapsedTime;
+
+  //Uses PID control to adjust the speed
+  int speedDifference = (Kp * error) + (Ki * totalError) + (Kd * derivError);
+  lastError = error;
+
+  //If the speed difference is positive, the right motor is going faster than the left.
+  //This means that the right motor speed will be decreased by the speed difference.
+   leftSpeed = (int)maxSpeed - speedDifference;
+   rightSpeed = (int)maxSpeed + speedDifference;
+
+  //The contrain function will instill a domain for the speed - it has to be
+  // >= 0 and <= maxSpeed. This function will fix that.
+  leftSpeed = constrain(leftSpeed, 0, (int)maxSpeed);
+  rightSpeed = constrain(rightSpeed, 0, (int)maxSpeed);
+
+  motors.setSpeeds(leftSpeed, rightSpeed);
+
+  previousTime = currentTime;
+}
+
+// Straight State
+void straightState()
+{
+    motors.setSpeeds(motorSpeedLeft, motorSpeedRight); // Run motors at specified speeds
+    readMotorValues();//read encoder data to correct trajectory
+}
+
+// Turn State
+void turnState()
+{
+    //turnSensorUpdate();
+
+    while (1) {
+        turnSensorUpdate();
+        /*turns the bot until the gyroscope reads an angle of 35 degrees*/
+        if (getAngle() < 35 && getAngle() > 0) {
+            motors.setSpeeds(-motorSpeedLeft, motorSpeedRight);
+        }
+        else if (getAngle() > -35 && getAngle() < 0) {
+            motors.setSpeeds(motorSpeedLeft, -motorSpeedRight);
+        }
+        else {
+            motors.setSpeeds(0, 0);
+            break;
+        }
+    }
+    turnSensorReset(); //Reset gyroscope 
 }
