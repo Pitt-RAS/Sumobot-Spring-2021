@@ -46,7 +46,8 @@ unsigned long initialDelay = 1000;
 //declare for use in encoder adjustment
 unsigned long int lastEncoderTime;
 
-int option = 0;
+enum State { Idle, CalibrateLineFollow, LineFollow, CalibrateStraight, Straight, Turn }
+int state = Idle;
 
 //Necessary to calibrate for the environment
 void calibrateSensors()
@@ -71,20 +72,6 @@ void calibrateSensors()
 
 void setup()
 {
-
-  lcd.clear(); 
-  lcd.print(F("A-LinFol"));
-  lcd.gotoXY(0,1);
-  lcd.print(F("B-Obvoid"));
-
-  while(option == 0) {
-    if (buttonA.isPressed()) {
-      option = 1;
-    }
-    else if (buttonB.isPressed()) {
-      option = 2;
-    }
-  }
   
   if (option == 1)
   {
@@ -115,39 +102,78 @@ void setup()
     lcd.clear();
     lcd.print(F("Operating"));
   }
-  else
-  {
-    /*Set up gyroscope*/
-    turnSensorSetup();
-    lcd.clear();
-    lcd.gotoXY(0,0);
-    lcd.print(F("Press A"));
-    lcd.gotoXY(0,1);
-    lcd.print(F("to finish"));
-    
-    lcd.clear();
-    lcd.gotoXY(0,0);
-    lcd.print(F("Press B"));
-    lcd.gotoXY(0,1);
-    lcd.print(F("to begin"));
-
-    buttonB.waitForButton(); // Wait for button B to be pressed to start
-    
-    // Buzzer variables in case they need to be changed
-    unsigned int buzzerFrequency = 261; // Middle C
-    unsigned int buzzerDuration =  200; // In milliseconds
-    unsigned char buzzerVolume = 10; // On scale of 0-15
-    
-    
-    buzzer.playFrequency(buzzerFrequency, buzzerDuration, buzzerVolume); // Play buzzer
-    delay(initialDelay); // Delay robot so it doesn't immediately move after pressing button A
-    lastEncoderTime = millis(); //sets initial value
-    proxSensors.initThreeSensors(); // configures proxSensors to use all three sensors
-  }
 }
 
 void loop()
 {
+
+  switch(state)
+  {
+    case Idle:
+      
+      lcd.clear(); 
+      lcd.print(F("A-LinFol"));
+      lcd.gotoXY(0,1);
+      lcd.print(F("B-Obvoid"));
+      
+      if (buttonA.isPressed()) {
+        state = CalibrateLineFollow;
+      }
+      else if (buttonB.isPressed()) {
+        state = CalibrateStraight;
+      }
+      break;
+
+    case CalibrateLineFollow:
+      break;
+
+    case LineFollow:
+      break;
+
+    case CalibrateStraight:
+      /*Set up gyroscope*/
+      turnSensorSetup();
+      lcd.clear();
+      lcd.gotoXY(0,0);
+      lcd.print(F("Press A"));
+      lcd.gotoXY(0,1);
+      lcd.print(F("to finish"));
+    
+      lcd.clear();
+      lcd.gotoXY(0,0);
+      lcd.print(F("Press B"));
+      lcd.gotoXY(0,1);
+      lcd.print(F("to begin"));
+
+      buttonB.waitForButton(); // Wait for button B to be pressed to start
+    
+      // Buzzer variables in case they need to be changed
+      unsigned int buzzerFrequency = 261; // Middle C
+      unsigned int buzzerDuration =  200; // In milliseconds
+      unsigned char buzzerVolume = 10; // On scale of 0-15
+    
+    
+      buzzer.playFrequency(buzzerFrequency, buzzerDuration, buzzerVolume); // Play buzzer
+      delay(initialDelay); // Delay robot so it doesn't immediately move after pressing button A
+      lastEncoderTime = millis(); //sets initial value
+      proxSensors.initThreeSensors(); // configures proxSensors to use all three sensors
+      if(isObject()) 
+      {
+        state = Turn; 
+      } 
+      else 
+      {
+        state = Straight;
+      }
+      break;
+
+    case Straight:
+      break;
+
+    case Turn:
+      break;  
+  }
+
   if (option == 1)
   {
     double currentTime = millis();
@@ -194,15 +220,7 @@ void loop()
   {
     /*conditional statement 
     *if we detect object we stop and turn else the bot moves forward*/
-    if(isObject()) 
-    {
-        turn(); 
-    } 
     
-    else 
-    {
-        straight();
-    }
   }
 }
 
