@@ -88,12 +88,12 @@ void loop()
 
     case Straight:
       straightState();
-      if (isObject) { state = Turn; }
+      if (isObject()) { state = Turn; }
       break;
 
     case Turn:
       turnState();
-      if (!isObject) { state = Straight;  }
+      if (!isObject()) { state = Straight;  }
       break;  
   }
   if (buttonC.isPressed()) {
@@ -121,7 +121,7 @@ bool isObject() {
   }
   
 
-/*Fucntion to stop the motors when called*/
+/*Function to stop the motors when called*/
 void stopMotors() {
   motors.setSpeeds(0, 0);
   }
