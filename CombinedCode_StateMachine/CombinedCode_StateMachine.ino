@@ -63,7 +63,6 @@ void setup()
 
   delay(500);
   lcd.clear();
-  lcd.print(F("Operating"));
 }
 
 void loop()
@@ -174,17 +173,17 @@ void readMotorValues(){
 //Idle State
 void idleState()
 {
-  lcd.clear(); 
-    lcd.print(F("A-LinFol"));
-    lcd.gotoXY(0,1);
-    lcd.print(F("B-Obvoid"));
-    
-    if (buttonA.isPressed()) {
-      state = CalibrateLineFollow;
-    }
-    else if (buttonB.isPressed()) {
-      state = CalibrateStraight;
-    }
+	lcd.clear();
+	lcd.print(F("A-LinFol"));
+	lcd.gotoXY(0, 1);
+	lcd.print(F("B-Obvoid"));
+
+	if (buttonA.isPressed()) {
+		state = CalibrateLineFollow;
+	}
+	else if (buttonB.isPressed()) {
+		state = CalibrateStraight;
+	}
 }
 
 // Straight Calibration State
