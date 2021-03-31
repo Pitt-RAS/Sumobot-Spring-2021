@@ -191,11 +191,6 @@ void calibrateStraightState()
 {
   /*Set up gyroscope*/
   turnSensorSetup();
-  lcd.clear();
-  lcd.gotoXY(0,0);
-  lcd.print(F("Press A"));
-  lcd.gotoXY(0,1);
-  lcd.print(F("to finish"));
   
   lcd.clear();
   lcd.gotoXY(0,0);
