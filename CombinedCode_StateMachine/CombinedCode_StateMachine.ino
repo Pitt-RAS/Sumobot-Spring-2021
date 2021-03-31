@@ -173,7 +173,7 @@ void readMotorValues(){
 //Idle State
 void idleState()
 {
-	lcd.clear();
+    lcd.gotoXY(0, 0);
 	lcd.print(F("A-LinFol"));
 	lcd.gotoXY(0, 1);
 	lcd.print(F("B-Obvoid"));
@@ -287,6 +287,11 @@ void straightState()
 // Turn State
 void turnState()
 {
+    lcd.gotoXY(0, 0);
+    lcd.print(F("Turning "));
+    lcd.gotoXY(0, 1);
+    lcd.print(F("        "));
+
     //turnSensorUpdate();
 
     while (1) {
