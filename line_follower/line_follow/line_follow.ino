@@ -58,7 +58,7 @@ void setup()
 
   //Spins robt around to expose it to an environment of variable refelectance
   calibrateSensors();
-  
+
   delay(500);
 }
 
