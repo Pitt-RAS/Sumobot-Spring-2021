@@ -14,8 +14,8 @@
  #include <WiFiUdp.h> // Used for UDP client/server (to transmit sensor data from bot to computer)
 
  // Replace these with your WiFi network settings
- const char* ssid = "Fios-57YO5"; //replace this with your WiFi network name
- const char* password = "vat4277eat65panda"; //replace this with your WiFi network password
+ const char* ssid = "Network name"; //replace this with your WiFi network name
+ const char* password = "Network password"; //replace this with your WiFi network password
  IPAddress broadcastIp;
  WiFiUDP udp;
 
