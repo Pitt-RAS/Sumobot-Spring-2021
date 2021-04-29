@@ -1,5 +1,5 @@
 
-//Reading from the sensor using NewPing
+/*//Reading from the sensor using NewPing
 
 #include <NewPing.h>
 
@@ -26,4 +26,4 @@ void readUltraSonicSensor(){
 
 void loop() {
   readUltraSonicSensor();
-}
+}*/

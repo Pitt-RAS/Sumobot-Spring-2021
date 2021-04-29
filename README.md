@@ -1,6 +1,11 @@
 # Sumobot-Spring-2021
 #### Code base for Sumo Bot project, spring term of 2021.
 
+
+
+
+2/2021:
+
 Wooo! This is where your awesome SumoBot code goes!
 
 This file is a README.md file.  '.md' files are Markdown files.  Markdown is a "lightweight markup language", kind of confusing right, markdown, markup...
@@ -12,3 +17,4 @@ So, markup and markdown are scripting languages used to stylistically format tex
 
 ### EX: Group picture from our first meeting!
 <img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/images/first_meeting_spring_2021.png" width="600">
+

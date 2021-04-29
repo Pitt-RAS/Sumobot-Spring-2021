@@ -1,4 +1,5 @@
 #include <Zumo32U4.h>
+#include <Servo.h>
 
 //Replacing the lcd pins 0 and 1 for input and output of the sensor
 int trigPin = 1;
@@ -29,7 +30,7 @@ void ultraSonicSensor()
   Serial.print("cm");
   Serial.println();
 
-  delay(250);
+  //delay(50);
 }
 
 
