@@ -1,21 +1,64 @@
 # Sumobot-Spring-2021
-#### Code base for Sumo Bot project, spring term of 2021.
+## Code base for Sumo Bot project, spring term of 2021.
 
+This is the University of Pittsburgh's Spring 2021 Sumobot repository. Traditionally, Sumobot is a competition in which teams build and program a miniature sumobot to battle other teams' bots. 
 
-2/2021:
+2021 was different, however - COVID-19 ravagaed campuses, and the Sumobot competition was cancelled. We used this opportunity to learn some cool robotics topics while designing, creating, and improving upon new sumobot code. 
+
+We began with basic bot programming - and continued into line following, PID control, state machines, localization, motion planning, and external hardware additions. 
+
+This was completed on Pololu's Zumo32U4 sumobot. 
+
+## Detailed below is a broad overview of the tasks we took on and achieved this semester. 
+
+### 2/2021:
 
 Wooo! This is where your awesome SumoBot code goes!
 
-This file is a README.md file.  '.md' files are Markdown files.  Markdown is a "lightweight markup language", kind of confusing right, markdown, markup...
+In the month of February, we introduced Git, Github, and Trello for Agile-style sprint planning. We also introduced Pololu's Zumo32U4 library, and began to implement instances of some of the bot's hardware components. 
 
-So, markup and markdown are scripting languages used to stylistically format text.  In terms of Github's markdown, you can also include some HTML formatting in your document.
+We then began to utilize encoders to improve the control loop of the bot, as well as experiment with the bot's cpability to follow a line on the ground. 
 
-[Here](https://guides.github.com/features/mastering-markdown/#examples) is a fairly comprehensive guide to what you can do with github's markdown.  IMO this kind of stuff is great to be using on a regular basis to accurately and thoroughly document your projects.  It will make your projects stand out a ton more, and overall look a lot more professional.
+We got it self-correcting its trajectory fairly well! 
 
-<<<<<<< HEAD
+INSERT OBJECTAVOIDENCODERS_NOPID 0:13 
 
-### EX: Group picture from our first meeting!
-<img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/images/first_meeting_spring_2021.png" width="600">
+### 3/2021:
 
-=======
->>>>>>> 11b2869283d3c84ec65a5a7ce272a1fb07cb6b49
+In the month of March, we implemented PID control on both the straight line driving and line following code. We also implemented object avoidance using the bot's infared sensor. 
+
+The trajectory correction of PID was very notable: 
+
+INSERT OBJECTAVOIDENCODERS_PID_WALLTROUBLE
+
+INSERT LINE_FOLLOWER
+
+However, we had issues with the side sensors and making contact with walls: 
+
+INSERT OBJECTAVOIDENCODERS_SIDESENSORSTROUBLE
+
+INSERT OBJECTAVOID_FAIL
+
+Eventually, we got them to work!
+
+INSERT SIDESENSORSUCCESS
+
+### 4/2021
+
+In the Month of April, we really improved on our previous work. We implemented a state machine to organize the code, used the Gyroscope to measure the orientation of the bot, and attached a servo motor and Ultrasonic sensor to allow the bot to seek the optimal path for driving forward. 
+
+We had some inital trouble with the Gyroscope: 
+
+INSERT OBJECTAVOID_FAIL2_WITHGYRO
+
+But we wrapped it all up in our awesome SODAR code: 
+
+INSERT SODAR_VIDEO
+
+
+
+It was a fantastic semester, and though we were heavily restricted due to covid, we designed some innovative bot code capabilities that may not have been possible in a normal year. 
+
+Enjoy the repository!
+
+  -Sumobot 2021 team
