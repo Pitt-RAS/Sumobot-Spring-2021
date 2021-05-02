@@ -13,7 +13,7 @@ This was completed on Pololu's Zumo32U4 sumobot.
 
 ### 2/2021:
 
-'Wooo! This is where your awesome SumoBot code goes!'
+*Wooo! This is where your awesome SumoBot code goes!*
 
 In the month of February, we introduced Git, Github, and Trello for Agile-style sprint planning. We also introduced Pololu's Zumo32U4 library, and began to implement instances of some of the bot's hardware components. 
 
@@ -44,7 +44,7 @@ We had some inital trouble with the Gyroscope, but we wrapped it all up in our a
 
 It was a fantastic semester, and though we were heavily restricted due to covid, we designed some innovative bot code capabilities that may not have been possible in a normal year. 
 
-Check out videos of the bot working in the "media" folder.
+**Check out videos of the bot working in the "media" folder.**
 
 Enjoy the repository!
 
