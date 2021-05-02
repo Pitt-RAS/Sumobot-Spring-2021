@@ -13,7 +13,7 @@ This was completed on Pololu's Zumo32U4 sumobot.
 
 ### 2/2021:
 
-Wooo! This is where your awesome SumoBot code goes!
+'Wooo! This is where your awesome SumoBot code goes!'
 
 In the month of February, we introduced Git, Github, and Trello for Agile-style sprint planning. We also introduced Pololu's Zumo32U4 library, and began to implement instances of some of the bot's hardware components. 
 
@@ -21,43 +21,29 @@ We then began to utilize encoders to improve the control loop of the bot, as wel
 
 We got it self-correcting its trajectory fairly well! 
 
-INSERT OBJECTAVOIDENCODERS_NOPID 0:13 
 
 ### 3/2021:
 
 In the month of March, we implemented PID control on both the straight line driving and line following code. We also implemented object avoidance using the bot's infared sensor. 
 
-The trajectory correction of PID was very notable: 
-
-INSERT OBJECTAVOIDENCODERS_PID_WALLTROUBLE
-
-INSERT LINE_FOLLOWER
-
-However, we had issues with the side sensors and making contact with walls: 
-
-INSERT OBJECTAVOIDENCODERS_SIDESENSORSTROUBLE
-
-INSERT OBJECTAVOID_FAIL
+The trajectory correction of PID was very notable. However, we had issues with the side sensors and making contact with walls. 
 
 Eventually, we got them to work!
 
-INSERT SIDESENSORSUCCESS
+
 
 ### 4/2021
 
 In the Month of April, we really improved on our previous work. We implemented a state machine to organize the code, used the Gyroscope to measure the orientation of the bot, and attached a servo motor and Ultrasonic sensor to allow the bot to seek the optimal path for driving forward. 
 
-We had some inital trouble with the Gyroscope: 
+We had some inital trouble with the Gyroscope, but we wrapped it all up in our awesome SODAR code: 
 
-INSERT OBJECTAVOID_FAIL2_WITHGYRO
-
-But we wrapped it all up in our awesome SODAR code: 
-
-INSERT SODAR_VIDEO
-
+INSERT SODAR IMAGES
 
 
 It was a fantastic semester, and though we were heavily restricted due to covid, we designed some innovative bot code capabilities that may not have been possible in a normal year. 
+
+'Check out videos of the bot working in the "media" folder.'
 
 Enjoy the repository!
 
