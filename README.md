@@ -13,7 +13,7 @@ This was completed on Pololu's Zumo32U4 sumobot.
 
 ### 2/2021:
 
-'Wooo! This is where your awesome SumoBot code goes!'
+*Wooo! This is where your awesome SumoBot code goes!*
 
 In the month of February, we introduced Git, Github, and Trello for Agile-style sprint planning. We also introduced Pololu's Zumo32U4 library, and began to implement instances of some of the bot's hardware components. 
 
@@ -30,7 +30,7 @@ The trajectory correction of PID was very notable. However, we had issues with t
 
 Eventually, we got them to work!
 
-
+<img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/Line_Follower_Photo.png" width="300">
 
 ### 4/2021
 
@@ -38,12 +38,13 @@ In the Month of April, we really improved on our previous work. We implemented a
 
 We had some inital trouble with the Gyroscope, but we wrapped it all up in our awesome SODAR code: 
 
-INSERT SODAR IMAGES
+<img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/US_Sensors.png" width="300">
 
+<img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/SODAR_Photo.png" width="300">
 
 It was a fantastic semester, and though we were heavily restricted due to covid, we designed some innovative bot code capabilities that may not have been possible in a normal year. 
 
-'Check out videos of the bot working in the "media" folder.'
+**Check out videos of the bot working in the "media" folder.**
 
 Enjoy the repository!
 
