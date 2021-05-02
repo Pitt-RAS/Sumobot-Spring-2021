@@ -30,7 +30,7 @@ The trajectory correction of PID was very notable. However, we had issues with t
 
 Eventually, we got them to work!
 
-
+<img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/images/Line_Follower_Image.png" width="600">
 
 ### 4/2021
 
