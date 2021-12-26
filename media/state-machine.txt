@@ -1,0 +1,26 @@
+@startuml
+[*] --> Idle
+Idle : Wait for Button Press
+state LineFollower {
+Idle --> CalibrateLineFollow : Button A Pressed
+CalibrateLineFollow : Calibrate sensors for line following
+CalibrateLineFollow --> LineFollow : End of Calibration loop 
+LineFollow : Follow Line
+LineFollow --> LineFollow : Continuous Loop
+}
+
+state StraightLine {
+Idle --> CalibrateStraightLine : Button B Pressed
+CalibrateStraightLine : Calibrate Infrared sensors
+CalibrateStraightLine --> Straight : Finish calibration loop
+Straight : PID-controlled straight line
+Straight --> Turn : Object detected 
+Straight --> Straight : Object not detected 
+Turn --> Straight : Object not detected
+Turn --> Turn : Object detected 
+}
+
+LineFollow --> [*] : Button C pressed
+Straight --> [*] : Button C pressed
+Turn --> [*] : Button C pressed
+@enduml
