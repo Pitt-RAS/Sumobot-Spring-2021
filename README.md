@@ -36,6 +36,10 @@ Eventually, we got them to work!
 
 In the Month of April, we really improved on our previous work. We implemented a state machine to organize the code, used the Gyroscope to measure the orientation of the bot, and attached a servo motor and Ultrasonic sensor to allow the bot to seek the optimal path for driving forward. 
 
+State Machine: 
+
+<img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/state-machine.png" width="500">
+
 We had some inital trouble with the Gyroscope, but we wrapped it all up in our awesome SODAR code: 
 
 <img src="https://github.com/Pitt-RAS/Sumobot-Spring-2021/blob/main/media/US_Sensors.png" width="300">
